@@ -1,96 +1,120 @@
-# RLHF Roast Generator (GPT-2 + Preference Model + PPO)
+# Roast Generator (Beginner-Friendly Explanation)
 
-This project implements a full toy RLHF loop for roast generation:
+## What is this project?
 
-1. Collect preference data (`chosen` witty roast vs `rejected` mean roast)
-2. Supervised fine-tune GPT-2 on witty examples (SFT)
-3. Train a reward model on preference pairs
-4. Run PPO to align the policy toward high reward
-5. Analyze reward/toxicity/diversity/wit and inspect failure modes
+This project is a small experiment that teaches a computer to write **funny roasts** (playful jokes about someone’s habits) instead of writing random or overly mean insults.
 
-The target behavior is: funny, clever, on-topic roasts that avoid lazy toxicity.
+Think of it like this:
 
-## Project Structure
+- At first, the computer says messy nonsense.
+- Then we show it examples of better jokes.
+- Then we give it a “judge” that scores jokes.
+- Then the computer practices and tries to get better scores.
 
-- `scripts/generate_dataset.py`: builds SFT, preference, and PPO prompt datasets
-- `scripts/sft_train.py`: SFT training
-- `scripts/reward_model.py`: reward model training (pairwise preference loss)
-- `scripts/ppo_train.py`: manual PPO loop with KL regularization
-- `scripts/analysis.py`: quantitative comparison + overoptimization checks
-- `app.py`: Gradio UI for side-by-side model comparison
-- `run_pipeline.py`: end-to-end runner
+The goal is to make jokes that are:
 
-## Setup
+- more clever,
+- less toxic,
+- and more relevant to the person’s trait (for example: “always late to meetings”).
+
+---
+
+## Why was this built?
+
+This was built for a Reinforcement Learning challenge.
+
+The challenge required:
+
+1. collect preference data (better joke vs worse joke),
+2. train a scoring model (“judge”),
+3. run an improvement loop (PPO),
+4. report metrics and discuss where the model still fails.
+
+This project does all of those steps.
+
+---
+
+## The 5 steps in simple terms
+
+### 1) Build examples
+
+We create pairs like:
+
+- **Good version**: witty, clever, less offensive
+- **Bad version**: mean, lazy, or low-quality
+
+So the system learns what “better” means.
+
+### 2) Basic training
+
+We take a small language model (GPT-2) and train it on the better examples so it learns roast style.
+
+### 3) Train a judge
+
+A separate model learns to score outputs.
+It should give higher scores to the better roast in each pair.
+
+### 4) Improvement loop (PPO)
+
+The roast model generates jokes, the judge scores them, and the model updates itself to improve.
+
+### 5) Evaluate results
+
+We compare three versions:
+
+- Base GPT-2 (no training)
+- SFT model (basic training only)
+- PPO model (trained with feedback loop)
+
+We track quality, toxicity, and repetition/diversity.
+
+---
+
+## Important truth about current results
+
+This project works as a **learning pipeline**, but roast quality is still inconsistent.
+
+Sometimes outputs are funny, but sometimes they are confusing or don’t fully match the prompt.
+That is expected because this is a toy setup with a small dataset.
+
+So this is best viewed as:
+
+- a successful RLHF workflow demo,
+- not a production-ready comedy model.
+
+---
+
+## How to run it (minimal instructions)
+
+From the project folder:
 
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-```
-
-## Run
-
-Full pipeline:
-
-```bash
 venv/bin/python run_pipeline.py
-```
-
-Only analysis (after models already exist):
-
-```bash
-venv/bin/python run_pipeline.py --steps 5
-```
-
-Launch UI:
-
-```bash
 venv/bin/python app.py
 ```
 
-## Latest Results (Run on March 23, 2026)
+Then open the local URL shown in terminal.
 
-From `outputs/analysis_metrics.json`:
+---
 
-| Model | Avg Reward | Toxicity | Wit Proxy | Distinct-2 | Avg Length |
-|---|---:|---:|---:|---:|---:|
-| Base GPT-2 | -1.3751 | 0.0000 | 0.0190 | 0.8377 | 54.4 |
-| SFT Model | -1.1202 | 0.0000 | 0.1333 | 0.6989 | 67.2 |
-| PPO Model | -0.2328 | 0.0000 | 0.1524 | 0.6856 | 69.1 |
+## What is included vs not included on GitHub
 
-Alignment deltas (PPO vs SFT):
+GitHub includes code only.
 
-- Reward: `+0.8874`
-- Toxicity: `+0.0000`
-- Distinct-2: `-0.0133`
-- Wit proxy: `+0.0190`
+GitHub does **not** include large generated folders:
 
-Interpretation:
+- `data/`
+- `models/`
+- `outputs/`
+- `venv/`
 
-- PPO improved the learned reward objective.
-- Toxicity remained flat (good).
-- Diversity stayed close to SFT.
-- Reward and wit proxy improved, toxicity stayed flat, but absolute reward remains negative and text quality is still inconsistent.
+Those are created on your machine when you run the pipeline.
 
-## Misalignment / Overoptimization Notes
+---
 
-This project intentionally tracks overoptimization risks:
+## One-line summary
 
-- Reward increases that do not correspond to better human-perceived quality
-- Repetition / mode collapse
-- Toxicity increases
-
-In current results, reward improves without toxicity increase, but wit-quality remains inconsistent. This is a realistic RLHF failure mode on small-data toy setups.
-
-## Outputs
-
-Generated artifacts:
-
-- `models/sft_model/`
-- `models/reward_model/`
-- `models/ppo_model/`
-- `outputs/reward_training_log.json`
-- `outputs/ppo_training_log.json`
-- `outputs/analysis_metrics.json`
-- `outputs/analysis_dashboard.png`
-- `outputs/reward_model_training.png`
+This project teaches a small model to move from random/mean text toward more witty roast-style text using a human-preference training loop, while showing where alignment still falls short.
