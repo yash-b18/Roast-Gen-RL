@@ -102,8 +102,9 @@ def clean_response(text):
     lines = [l for l in text.split("\n") if l.strip() and "Roast someone" not in l]
     text = " ".join(lines).strip()
 
-    # Split on sentence-ending punctuation, keep first 2 sentences
     import re
+    text = re.sub(r"http\S+", "", text).strip()
+    # Split on sentence-ending punctuation, keep first 2 sentences
     sentences = re.split(r'(?<=[.!?])\s+', text)
     sentences = [s for s in sentences if len(s.strip()) > 10]
     if not sentences:
@@ -124,6 +125,9 @@ def generate(model, tok, prompt, max_new_tokens=100, temperature=0.8):
             do_sample=True,
             temperature=temperature,
             top_p=0.9,
+            top_k=50,
+            repetition_penalty=1.15,
+            no_repeat_ngram_size=3,
             pad_token_id=tok.eos_token_id,
         )
     full = tok.decode(output[0], skip_special_tokens=True)
@@ -160,7 +164,12 @@ def roast_all(trait, temperature, max_tokens):
         return empty, empty, empty, empty, ""
 
     trait_clean = trait.strip().rstrip(":")
-    prompt = f"Roast someone who {trait_clean}:"
+    # Small grammar fix for common user input like "always late to meetings".
+    if trait_clean.lower().startswith("always "):
+        trait_clause = f"is {trait_clean}"
+    else:
+        trait_clause = trait_clean
+    prompt = f"Roast someone who {trait_clause}:"
     prompt_display = f"**Prompt sent to all models:** `{prompt}`"
 
     base_roast = generate(base_model, base_tok, prompt, int(max_tokens), temperature)

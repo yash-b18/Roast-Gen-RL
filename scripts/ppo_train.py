@@ -81,7 +81,7 @@ def compute_kl_divergence(policy_logprobs, ref_logprobs, mask):
     """Compute KL(policy || reference) per token, then average."""
     kl = policy_logprobs - ref_logprobs  # Approximation: sum of log-ratio
     kl = kl * mask
-    return kl.sum() / mask.sum()
+    return kl.sum() / mask.sum().clamp(min=1.0)
 
 
 def ppo_step(
@@ -127,9 +127,14 @@ def ppo_step(
     with torch.no_grad():
         old_log_probs = get_log_probs(policy_model, input_ids, attention_mask)
 
-        # Get hidden states for value estimation
-        outputs = policy_model(input_ids=input_ids, attention_mask=attention_mask)
-        old_values = value_head(outputs.hidden_states[-1][:, :-1, :] if hasattr(outputs, 'hidden_states') and outputs.hidden_states else outputs.logits[:, :-1, :].mean(-1).unsqueeze(-1).expand(-1, -1, policy_model.config.hidden_size))
+        # Use final hidden states as critic input
+        outputs = policy_model(
+            input_ids=input_ids,
+            attention_mask=attention_mask,
+            output_hidden_states=True,
+            use_cache=False,
+        )
+        old_values = value_head(outputs.hidden_states[-1][:, :-1, :])
 
         ref_log_probs = get_log_probs(ref_model, input_ids, attention_mask)
 
@@ -149,7 +154,11 @@ def ppo_step(
     # Compute advantages using GAE (simplified: no discount since single-step reward)
     # For simplicity, advantage = reward - value
     advantages = token_rewards - old_values.detach()
-    advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-8)
+    masked_advantages = advantages * response_mask_shifted
+    denom = response_mask_shifted.sum().clamp(min=1.0)
+    adv_mean = masked_advantages.sum() / denom
+    adv_var = (((masked_advantages - adv_mean) ** 2) * response_mask_shifted).sum() / denom
+    advantages = ((masked_advantages - adv_mean) / torch.sqrt(adv_var + 1e-8)) * response_mask_shifted
 
     # PPO optimization
     total_policy_loss = 0
@@ -164,13 +173,18 @@ def ppo_step(
         surr1 = ratio * advantages
         surr2 = torch.clamp(ratio, 1 - clip_eps, 1 + clip_eps) * advantages
         policy_loss = -torch.min(surr1, surr2)
-        policy_loss = (policy_loss * response_mask_shifted).sum() / response_mask_shifted.sum()
+        policy_loss = (policy_loss * response_mask_shifted).sum() / response_mask_shifted.sum().clamp(min=1.0)
 
-        # Value loss (simplified)
-        outputs = policy_model(input_ids=input_ids, attention_mask=attention_mask)
-        # Use logits mean as a simple value proxy
-        new_values = value_head(outputs.logits[:, :-1, :].mean(-1).unsqueeze(-1).expand(-1, -1, policy_model.config.hidden_size))
-        value_loss = F.mse_loss(new_values, token_rewards.detach())
+        # Value loss on response tokens only
+        outputs = policy_model(
+            input_ids=input_ids,
+            attention_mask=attention_mask,
+            output_hidden_states=True,
+            use_cache=False,
+        )
+        new_values = value_head(outputs.hidden_states[-1][:, :-1, :])
+        value_sq_error = (new_values - token_rewards.detach()) ** 2
+        value_loss = (value_sq_error * response_mask_shifted).sum() / response_mask_shifted.sum().clamp(min=1.0)
 
         # Total loss
         loss = policy_loss + vf_coef * value_loss
@@ -217,14 +231,21 @@ def main():
     policy_model = AutoModelForCausalLM.from_pretrained(SFT_MODEL_DIR).to(device)
     policy_model.train()
 
-    # Freeze all but the last 2 transformer blocks + lm_head for efficiency
+    # Freeze all but the last 4 transformer blocks + lm_head for efficiency/quality tradeoff
     for name, param in policy_model.named_parameters():
         param.requires_grad = False
-    # Unfreeze last 2 blocks and lm_head
+    # Unfreeze last 4 blocks and lm_head
     for name, param in policy_model.named_parameters():
         if any(
             k in name
-            for k in ["transformer.h.10", "transformer.h.11", "transformer.ln_f", "lm_head"]
+            for k in [
+                "transformer.h.8",
+                "transformer.h.9",
+                "transformer.h.10",
+                "transformer.h.11",
+                "transformer.ln_f",
+                "lm_head",
+            ]
         ):
             param.requires_grad = True
 
@@ -268,7 +289,7 @@ def main():
     )
 
     # Training loop
-    num_epochs = 3
+    num_epochs = 6
     batch_size = 4
     max_new_tokens = 60
     kl_coef = 0.15
@@ -291,39 +312,49 @@ def main():
             batch_prompts = [prompts[i] for i in batch_indices]
             actual_batch_size = len(batch_prompts)
 
-            # Tokenize prompts
-            prompt_encodings = tokenizer(
-                batch_prompts, return_tensors="pt", padding=True, truncation=True
-            ).to(device)
-            prompt_lengths = prompt_encodings["attention_mask"].sum(dim=1).tolist()
-
-            # Generate responses
+            # Generate each sample independently so masks are exact even when EOS appears
+            prompt_lengths = []
+            generated_sequences = []
+            responses = []
             policy_model.eval()
             with torch.no_grad():
-                gen_outputs = policy_model.generate(
-                    **prompt_encodings,
-                    max_new_tokens=max_new_tokens,
-                    do_sample=True,
-                    temperature=0.8,
-                    top_p=0.9,
-                    pad_token_id=tokenizer.eos_token_id,
-                )
+                for prompt in batch_prompts:
+                    enc = tokenizer(prompt, return_tensors="pt").to(device)
+                    prompt_len = int(enc["attention_mask"].sum().item())
+                    seq = policy_model.generate(
+                        **enc,
+                        max_new_tokens=max_new_tokens,
+                        do_sample=True,
+                        temperature=0.8,
+                        top_p=0.9,
+                        pad_token_id=tokenizer.eos_token_id,
+                    )[0]
+                    prompt_lengths.append(prompt_len)
+                    generated_sequences.append(seq)
+                    response = tokenizer.decode(seq[prompt_len:], skip_special_tokens=True).strip()
+                    responses.append(response)
             policy_model.train()
 
-            # Pad all to same length
-            max_len = gen_outputs.shape[1]
-            attention_mask = torch.ones_like(gen_outputs)
-            for i in range(actual_batch_size):
-                # Mask padding tokens
-                pad_mask = gen_outputs[i] == tokenizer.pad_token_id
-                # Only mask leading pads (from prompt padding)
-                for j in range(gen_outputs.shape[1]):
-                    if gen_outputs[i, j] != tokenizer.pad_token_id:
-                        break
-                    attention_mask[i, j] = 0
+            max_len = max(seq.size(0) for seq in generated_sequences)
+            gen_outputs = torch.full(
+                (actual_batch_size, max_len),
+                tokenizer.pad_token_id,
+                dtype=torch.long,
+                device=device,
+            )
+            attention_mask = torch.zeros(
+                (actual_batch_size, max_len), dtype=torch.long, device=device
+            )
+            for i, seq in enumerate(generated_sequences):
+                seq_len = seq.size(0)
+                gen_outputs[i, :seq_len] = seq
+                attention_mask[i, :seq_len] = 1
 
             # Decode and score with reward model
-            full_texts = tokenizer.batch_decode(gen_outputs, skip_special_tokens=True)
+            full_texts = [
+                f"{prompt} {resp}".strip()
+                for prompt, resp in zip(batch_prompts, responses)
+            ]
             reward_encodings = tokenizer(
                 full_texts,
                 return_tensors="pt",
@@ -339,8 +370,7 @@ def main():
             epoch_rewards.extend(rewards.tolist())
 
             # Log examples
-            for p, ft, r in zip(batch_prompts, full_texts, rewards.tolist()):
-                response = ft[len(p):].strip()
+            for p, response, r in zip(batch_prompts, responses, rewards.tolist()):
                 epoch_examples.append({"prompt": p, "response": response, "reward": r})
 
             # PPO step

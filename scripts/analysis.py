@@ -138,8 +138,8 @@ def main():
 
     # Test prompts
     test_prompts = [
-        "Roast someone who always late to meetings:",
-        "Roast someone who obsessed with crypto:",
+        "Roast someone who is always late to meetings:",
+        "Roast someone who is obsessed with crypto:",
         "Roast someone who has a podcast nobody listens to:",
         "Roast someone who microwaves fish in the office:",
         "Roast someone who uses Comic Sans unironically:",
