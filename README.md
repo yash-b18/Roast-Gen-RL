@@ -1,106 +1,96 @@
-RLHF ROAST GENERATOR — Plain English Explanation
-=================================================
+# RLHF Roast Generator (GPT-2 + Preference Model + PPO)
 
-THE BIG IDEA
-------------
-Imagine you want to teach a computer to tell jokes — specifically, roast jokes
-(playful insults about someone's quirks). But here's the problem: if you just
-tell the computer "generate roasts," it might produce jokes that are simply mean
-and cruel rather than witty and clever. How do you teach it the difference
-between funny and hurtful?
+This project implements a full toy RLHF loop for roast generation:
 
-That's exactly what this project solves, using a technique called RLHF —
-Reinforcement Learning from Human Feedback.
+1. Collect preference data (`chosen` witty roast vs `rejected` mean roast)
+2. Supervised fine-tune GPT-2 on witty examples (SFT)
+3. Train a reward model on preference pairs
+4. Run PPO to align the policy toward high reward
+5. Analyze reward/toxicity/diversity/wit and inspect failure modes
 
+The target behavior is: funny, clever, on-topic roasts that avoid lazy toxicity.
 
-THE ANALOGY: TRAINING A DOG
-----------------------------
-Think of it like training a dog:
-  1. First, you show the dog some examples of good behavior
-  2. Then you teach it what "good" looks like by rewarding it
-  3. Finally, the dog learns to do more of the good stuff on its own
+## Project Structure
 
-We do the same thing with an AI language model (a program that generates text).
+- `scripts/generate_dataset.py`: builds SFT, preference, and PPO prompt datasets
+- `scripts/sft_train.py`: SFT training
+- `scripts/reward_model.py`: reward model training (pairwise preference loss)
+- `scripts/ppo_train.py`: manual PPO loop with KL regularization
+- `scripts/analysis.py`: quantitative comparison + overoptimization checks
+- `app.py`: Gradio UI for side-by-side model comparison
+- `run_pipeline.py`: end-to-end runner
 
+## Setup
 
-THE 5 STEPS, SIMPLY EXPLAINED
-------------------------------
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
 
-STEP 1 — Collect Examples (The Dataset)
-  We wrote 50 pairs of roasts for the same joke prompt. For example:
+## Run
 
-    Prompt: "Roast someone who is always late to meetings"
+Full pipeline:
 
-    Witty version:  "You're not fashionably late — fashion has standards
-                     and a schedule."
+```bash
+venv/bin/python run_pipeline.py
+```
 
-    Mean version:   "You're a worthless person who can't even tell time."
+Only analysis (after models already exist):
 
-  This teaches the system what "good" looks like versus "bad."
+```bash
+venv/bin/python run_pipeline.py --steps 5
+```
 
+Launch UI:
 
-STEP 2 — Basic Training (SFT)
-  We took GPT-2 — a pre-built AI text generator from OpenAI (think of it as
-  a blank student) — and made it read all the witty roasts. After this, when
-  you give it a prompt, it starts generating roast-style responses instead of
-  random text. This is like teaching the dog the basic commands.
+```bash
+venv/bin/python app.py
+```
 
+## Latest Results (Run on March 23, 2026)
 
-STEP 3 — Train a Judge (Reward Model)
-  Here's the clever part. We trained a separate AI whose only job is to SCORE
-  how good a roast is. We showed it hundreds of witty vs. mean pairs, and it
-  learned to tell them apart with 100% accuracy. This AI judge is the "reward
-  model" — it acts like the human holding the treat for the dog.
+From `outputs/analysis_metrics.json`:
 
+| Model | Avg Reward | Toxicity | Wit Proxy | Distinct-2 | Avg Length |
+|---|---:|---:|---:|---:|---:|
+| Base GPT-2 | -1.3751 | 0.0000 | 0.0190 | 0.8377 | 54.4 |
+| SFT Model | -1.1202 | 0.0000 | 0.1333 | 0.6989 | 67.2 |
+| PPO Model | -0.2328 | 0.0000 | 0.1524 | 0.6856 | 69.1 |
 
-STEP 4 — Alignment Training (PPO)
-  Now we use a technique called PPO (Proximal Policy Optimization) — a method
-  where:
+Alignment deltas (PPO vs SFT):
 
-    - The roast generator produces a joke
-    - The judge AI scores it (high score = witty, low score = mean)
-    - The generator gets "rewarded" for high scores and adjusts itself
-    - But there's a safety rule: don't change too much from your original self
-      (this prevents the AI from "cheating" by just saying the same phrase
-      over and over to get high scores)
+- Reward: `+0.8874`
+- Toxicity: `+0.0000`
+- Distinct-2: `-0.0133`
+- Wit proxy: `+0.0190`
 
-  This loop repeats until the generator gets better and better at witty roasts.
+Interpretation:
 
+- PPO improved the learned reward objective.
+- Toxicity remained flat (good).
+- Diversity stayed close to SFT.
+- Reward and wit proxy improved, toxicity stayed flat, but absolute reward remains negative and text quality is still inconsistent.
 
-STEP 5 — Check the Results
-  Finally, we measured whether the training actually worked and whether anything
-  went wrong:
+## Misalignment / Overoptimization Notes
 
-    Metric          What it means                        Result
-    -------         ----------------------------         ------
-    Reward score    Did the jokes get wittier?           Yes — went up
-    Toxicity        Did it become meaner?                No — stayed at zero
-    Diversity       Is it repeating itself?              No — still varied
+This project intentionally tracks overoptimization risks:
 
-  Verdict: HEALTHY ALIGNMENT — the model got better at witty roasts without
-  becoming a meaner version of itself.
+- Reward increases that do not correspond to better human-perceived quality
+- Repetition / mode collapse
+- Toxicity increases
 
+In current results, reward improves without toxicity increase, but wit-quality remains inconsistent. This is a realistic RLHF failure mode on small-data toy setups.
 
-WHY DOES THIS MATTER BEYOND ROASTS?
--------------------------------------
-This exact same technique is how ChatGPT, Claude, and other AI assistants are
-made to be helpful and safe. Instead of roasts, they use it to teach AI to:
+## Outputs
 
-  - Be helpful, not harmful
-  - Be honest, not deceptive
-  - Be polite, not rude
+Generated artifacts:
 
-The roast generator is a toy version of the same technology running the world's
-most powerful AI systems — making it a perfect learning project.
-
-
-RESULTS SUMMARY
----------------
-  Model         Reward Score    Toxicity    Wit Score    Diversity
-  ----------    ------------    --------    ---------    ---------
-  Base GPT-2        9.94          0.000       0.014        0.793
-  SFT Model         9.26          0.000       0.081        0.622
-  PPO Model        10.25          0.000       0.095        0.677
-
-  Key takeaway: PPO model has the highest reward and wit score, zero toxicity,
-  and more diversity than the SFT model — exactly what alignment should look like.
+- `models/sft_model/`
+- `models/reward_model/`
+- `models/ppo_model/`
+- `outputs/reward_training_log.json`
+- `outputs/ppo_training_log.json`
+- `outputs/analysis_metrics.json`
+- `outputs/analysis_dashboard.png`
+- `outputs/reward_model_training.png`

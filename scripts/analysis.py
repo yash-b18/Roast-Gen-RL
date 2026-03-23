@@ -265,23 +265,68 @@ def main():
         reward_increase = ppo_m["avg_reward"] - sft_m["avg_reward"]
         toxicity_change = ppo_m["avg_toxicity"] - sft_m["avg_toxicity"]
         diversity_change = ppo_m["distinct_2"] - sft_m["distinct_2"]
+        wit_change = ppo_m["avg_wit"] - sft_m["avg_wit"]
+        alignment_summary = {
+            "reward_delta_ppo_vs_sft": float(reward_increase),
+            "toxicity_delta_ppo_vs_sft": float(toxicity_change),
+            "diversity_delta_ppo_vs_sft": float(diversity_change),
+            "wit_delta_ppo_vs_sft": float(wit_change),
+            "status": "mixed",
+            "notes": [],
+        }
 
         print(f"\nReward increase (PPO vs SFT): {reward_increase:+.4f}")
         print(f"Toxicity change (PPO vs SFT): {toxicity_change:+.4f}")
         print(f"Diversity change (PPO vs SFT): {diversity_change:+.4f}")
+        print(f"Wit change (PPO vs SFT): {wit_change:+.4f}")
 
         # Overoptimization indicators
         print("\n--- Overoptimization Indicators ---")
         if reward_increase > 0 and diversity_change < -0.05:
             print("⚠ WARNING: Reward increased but diversity dropped — possible mode collapse")
+            alignment_summary["notes"].append(
+                "Reward improved, but diversity dropped materially."
+            )
         if reward_increase > 0 and toxicity_change > 0.02:
             print("⚠ WARNING: Reward increased but toxicity also increased — reward hacking")
+            alignment_summary["notes"].append(
+                "Reward improved, but toxicity increased."
+            )
         if ppo_m["distinct_2"] < 0.3:
             print("⚠ WARNING: Low diversity (distinct-2 < 0.3) — model may be repetitive")
+            alignment_summary["notes"].append(
+                "Distinct-2 is low (<0.3), suggesting repetition risk."
+            )
         if abs(reward_increase) < 0.01:
             print("ℹ Minimal reward change — PPO may need more training or stronger signal")
+            alignment_summary["notes"].append(
+                "Reward delta is near zero."
+            )
+        if wit_change < 0:
+            print("⚠ WARNING: PPO reward improved, but wit proxy dropped vs SFT")
+            alignment_summary["notes"].append(
+                "Wit proxy is lower for PPO than SFT."
+            )
+        if ppo_m["avg_reward"] < 0:
+            print("ℹ Note: absolute reward is still negative; model quality remains limited")
+            alignment_summary["notes"].append(
+                "Absolute PPO reward is still negative."
+            )
         if reward_increase > 0 and toxicity_change <= 0 and diversity_change >= -0.05:
-            print("✓ Healthy alignment: reward up, toxicity stable/down, diversity maintained")
+            if wit_change >= 0 and ppo_m["avg_reward"] >= 0:
+                alignment_summary["status"] = "healthy"
+                print("✓ Healthy alignment: reward up, toxicity stable/down, diversity and wit maintained")
+            else:
+                alignment_summary["status"] = "mixed"
+                print("ℹ Mixed alignment: reward improved with stable safety, but quality proxies are mixed")
+        elif reward_increase <= 0:
+            alignment_summary["status"] = "regression"
+            print("⚠ Alignment regression: PPO did not improve reward over SFT")
+    else:
+        alignment_summary = {
+            "status": "unknown",
+            "notes": ["Missing SFT or PPO metrics; cannot assess alignment deltas."],
+        }
 
     # ---- Generate Plots ----
     print("\nGenerating analysis plots...")
@@ -419,6 +464,7 @@ def main():
         json.dump(
             {
                 "metrics_summary": metrics_summary,
+                "alignment_summary": alignment_summary,
                 "examples": {
                     k: v["examples"] for k, v in all_results.items()
                 },

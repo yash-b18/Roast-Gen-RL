@@ -56,6 +56,8 @@ def main():
         save_steps=50,
         save_total_limit=2,
         fp16=False,  # MPS/CPU don't support fp16 well
+        bf16=False,
+        use_cpu=True,
         report_to="none",  # Set to "wandb" if you want logging
         max_length=256,
         dataset_text_field="text",

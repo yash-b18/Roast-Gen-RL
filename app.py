@@ -11,10 +11,10 @@ Interactive demo that lets you:
 import os
 import sys
 import json
+import socket
 
 import torch
 import torch.nn as nn
-import numpy as np
 import gradio as gr
 from transformers import AutoTokenizer, AutoModelForCausalLM, AutoModel
 
@@ -192,7 +192,7 @@ def roast_all(trait, temperature, max_tokens):
         f"| 🤖 Base GPT-2 | {base_score:.2f} | `{reward_bar(base_score)}` |\n"
         f"| 📚 SFT Model  | {sft_score:.2f} | `{reward_bar(sft_score)}` |\n"
         f"| 🏆 PPO Model  | {ppo_score:.2f} | `{reward_bar(ppo_score)}` |\n\n"
-        f"*Higher score = more witty/aligned according to the reward model*"
+        f"*Higher score = better according to the learned reward model (not a human judge).*"
     )
 
     return prompt_display, base_roast, sft_roast, ppo_roast, scores_md
@@ -230,6 +230,7 @@ def load_metrics():
 
 
 metrics_data = load_metrics()
+alignment_summary = metrics_data.get("alignment_summary") if metrics_data else None
 
 
 def format_metrics_table():
@@ -275,6 +276,32 @@ def load_ppo_log():
     ]
 
 
+def render_alignment_summary():
+    if not alignment_summary:
+        return "*Run `python run_pipeline.py --steps 5` to refresh alignment analysis.*"
+
+    reward_delta = alignment_summary.get("reward_delta_ppo_vs_sft", 0.0)
+    toxicity_delta = alignment_summary.get("toxicity_delta_ppo_vs_sft", 0.0)
+    diversity_delta = alignment_summary.get("diversity_delta_ppo_vs_sft", 0.0)
+    wit_delta = alignment_summary.get("wit_delta_ppo_vs_sft", 0.0)
+    status = alignment_summary.get("status", "unknown").upper()
+    notes = alignment_summary.get("notes", [])
+
+    notes_md = "\n".join([f"- {n}" for n in notes]) if notes else "- No warnings generated."
+    return (
+        "### Overoptimization Analysis\n\n"
+        f"**Status:** `{status}`\n\n"
+        "| Metric | PPO vs SFT Delta |\n"
+        "|--------|------------------:|\n"
+        f"| Reward | {reward_delta:+.4f} |\n"
+        f"| Toxicity | {toxicity_delta:+.4f} |\n"
+        f"| Distinct-2 | {diversity_delta:+.4f} |\n"
+        f"| Wit Proxy | {wit_delta:+.4f} |\n\n"
+        "**Notes**\n"
+        f"{notes_md}"
+    )
+
+
 # ──────────────────────────────────────────────
 # Build the Gradio interface
 # ──────────────────────────────────────────────
@@ -289,7 +316,7 @@ This demo fine-tuned GPT-2 to generate *witty* roasts using a full RLHF pipeline
 2. **Reward Model** — trained an AI judge to score witty vs. mean roasts
 3. **PPO** — used reinforcement learning to optimize for high reward
 
-Compare all three models side-by-side to see how alignment changes the outputs.
+Compare all three models side-by-side to inspect how alignment changed outputs.
 """
 
 STEP_EXPLAINER = """
@@ -413,7 +440,7 @@ A key concern in RLHF is **reward hacking** — the model finds ways to get a hi
 - **Toxicity increase**: Reward goes up but the text gets worse in other ways
 - **Reward inflation**: Scores keep climbing but quality plateaus
 
-In this project, we measured all three. The result: reward went up, toxicity stayed at zero, and diversity actually *improved* vs. the SFT model. ✓
+In this project, we measure all three each run and report the result in the **Training Metrics** tab.
 """)
 
         # ── Tab 3: Preference Dataset ───────────────────────────────
@@ -456,16 +483,7 @@ The model learned that **chosen** (witty) roasts should score higher than **reje
                         headers=["Epoch", "Avg Reward", "Std Reward", "# Samples"],
                     )
 
-            gr.Markdown("""
-### Overoptimization Analysis
-
-| Metric | SFT → PPO Change | Interpretation |
-|--------|-----------------|----------------|
-| Reward | +0.99 | PPO successfully improved alignment |
-| Toxicity | 0.000 → 0.000 | No reward hacking — model didn't become meaner |
-| Distinct-2 | 0.622 → 0.677 | Diversity *improved* — no mode collapse |
-| **Verdict** | ✓ **Healthy alignment** | Reward up, safety maintained, variety preserved |
-""")
+            gr.Markdown(render_alignment_summary())
 
         # ── Tab 5: Analysis Plots ───────────────────────────────────
         with gr.Tab("🖼️ Analysis Plots"):
@@ -488,4 +506,9 @@ The model learned that **chosen** (witty) roasts should score higher than **reje
 """)
 
 if __name__ == "__main__":
-    demo.launch(share=False, show_error=True, theme=gr.themes.Soft())
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("127.0.0.1", 0))
+        port = s.getsockname()[1]
+
+    print(f"Launching Gradio on http://127.0.0.1:{port}")
+    demo.launch(share=False, show_error=True, theme=gr.themes.Soft(), server_port=port)
