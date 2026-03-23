@@ -118,6 +118,34 @@ Then open the local URL shown in terminal.
 
 ---
 
+## How to recreate app data and models from scratch
+
+After cloning, the app will not have generated artifacts yet because `data/`, `models/`, and `outputs/` are not stored in GitHub.
+
+Run these commands in order:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+venv/bin/python run_pipeline.py --steps 1 2 3 4 5
+venv/bin/python app.py
+```
+
+What this recreates:
+
+- `data/` (training and eval prompt files)
+- `models/` (SFT model, reward model, PPO model)
+- `outputs/` (metrics json + analysis plots + training logs)
+
+If you already trained models and only want fresh analysis:
+
+```bash
+venv/bin/python run_pipeline.py --steps 5
+```
+
+---
+
 ## What is included vs not included on GitHub
 
 GitHub includes code only.
