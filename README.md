@@ -75,12 +75,30 @@ We track quality, toxicity, and repetition/diversity.
 This project works as a **learning pipeline**, but roast quality is still inconsistent.
 
 Sometimes outputs are funny, but sometimes they are confusing or don’t fully match the prompt.
-That is expected because this is a toy setup with a small dataset.
+That is expected because this is still a toy setup and optimization can over-focus on reward shortcuts.
 
 So this is best viewed as:
 
 - a successful RLHF workflow demo,
 - not a production-ready comedy model.
+
+---
+
+## Latest run (March 23, 2026)
+
+Latest evaluation on unseen prompts produced:
+
+- **Base GPT-2**: on-topic `0.1176`, contradiction `0.0125`, distinct-2 `0.6833`
+- **SFT**: on-topic `0.9879`, contradiction `0.0000`, distinct-2 `0.2840`
+- **PPO**: on-topic `0.9900`, contradiction `0.0000`, distinct-2 `0.0894`
+
+What this means:
+
+- Relevance improved a lot from base model to trained models.
+- Contradictions were reduced to near-zero.
+- PPO introduced **mode collapse** (too repetitive), so diversity and wit dropped.
+
+So the current version is better at staying on topic, but still needs stronger anti-repetition controls during RL training.
 
 ---
 
