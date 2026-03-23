@@ -72,6 +72,7 @@ TRAITS = [
     "brings kale chips to potlucks",
     "has an emotional support water bottle",
     "gives unsolicited book recommendations",
+    "has no hair",
 ]
 
 # Each trait gets a witty (chosen) and a mean (rejected) roast
@@ -276,57 +277,182 @@ ROAST_PAIRS = {
         "chosen": "You recommend books the way some people recommend restaurants — with the assumption that everyone else's taste is just waiting to be corrected.",
         "rejected": "You're a pretentious know-it-all and nobody wants your stupid book suggestions.",
     },
+    "has no hair": {
+        "chosen": "Your head reflects sunlight so well, pilots use it as a backup landing signal.",
+        "rejected": "You're ugly and bald. Nobody wants to look at you.",
+    },
+}
+
+CONTEXTUAL_SUFFIXES = [
+    "at work",
+    "in group chats",
+    "on social media",
+]
+
+UNSEEN_SUFFIXES = [
+    "at family dinners",
+    "while traveling",
+]
+
+STOPWORDS = {
+    "a", "an", "the", "and", "or", "to", "of", "in", "on", "at", "for", "with",
+    "is", "are", "be", "their", "they", "someone", "who", "has", "have", "too",
+    "always", "still", "uses", "using", "about",
 }
 
 
-def generate_sft_dataset():
+def build_expanded_traits():
+    expanded = list(TRAITS)
+    for trait in TRAITS:
+        for suffix in CONTEXTUAL_SUFFIXES:
+            expanded.append(f"{trait} {suffix}")
+    return sorted(set(expanded))
+
+
+def build_unseen_eval_traits(train_traits):
+    unseen = []
+    for trait in TRAITS:
+        for suffix in UNSEEN_SUFFIXES:
+            candidate = f"{trait} {suffix}"
+            if candidate not in train_traits:
+                unseen.append(candidate)
+    # Add a few hand-written unseen traits explicitly focused on semantic grounding.
+    unseen.extend(
+        [
+            "has no hair but still buys conditioner",
+            "is always early but somehow still unprepared",
+            "never reads messages but replies with thumbs up",
+            "talks about productivity while procrastinating",
+            "forgets names five seconds after introductions",
+        ]
+    )
+    return sorted(set(unseen))
+
+
+def contradiction_negative_for_trait(trait):
+    trait_lower = trait.lower()
+    if "no hair" in trait_lower:
+        return "Your beard routine takes longer than your commute, and your ponytail is your whole personality."
+    if "always late" in trait_lower:
+        return "You're never late; you're the human snooze button for everyone else."
+    if "obsessed with crypto" in trait_lower:
+        return "You avoid crypto entirely and only trust cash under your mattress."
+    if "podcast nobody listens" in trait_lower:
+        return "Your podcast is globally famous and too big for Spotify charts."
+    return "Not that you do that trait anyway; you're basically the exact opposite."
+
+
+def generic_witty_variants(trait, base_chosen=None):
+    variants = []
+    if base_chosen:
+        variants.append(base_chosen)
+    variants.extend(
+        [
+            f"You're the final boss of people who {trait}.",
+            f"If commitment were a sport, people who {trait} would ask you for coaching.",
+            f"People who {trait} usually chill out eventually; you turned it into brand strategy.",
+        ]
+    )
+    # Keep order but dedupe.
+    return list(dict.fromkeys(variants))
+
+
+def generic_rejected_variants(trait, base_rejected=None):
+    variants = []
+    if base_rejected:
+        variants.append(("toxic", base_rejected, 1.0))
+    variants.append(
+        (
+            "off_topic",
+            "Anyway, your Wi-Fi router probably needs a firmware update and your lunch sounds mid.",
+            1.3,
+        )
+    )
+    variants.append(("contradiction", contradiction_negative_for_trait(trait), 1.5))
+    variants.append(
+        (
+            "repetitive",
+            "You're bad. You're bad. You're bad. That's the whole joke, repeated forever.",
+            1.2,
+        )
+    )
+    return variants
+
+
+def generate_sft_dataset(all_traits):
     """Generate supervised fine-tuning dataset of (prompt, roast) pairs."""
     sft_data = []
-    for trait, roasts in ROAST_PAIRS.items():
+    for trait in all_traits:
+        roasts = ROAST_PAIRS.get(trait)
+        chosen_variants = generic_witty_variants(trait, roasts["chosen"] if roasts else None)
+        primary = chosen_variants[0]
         sft_data.append(
             {
                 "prompt": f"Roast someone who {trait}:",
-                "completion": roasts["chosen"],
-                "text": f"Roast someone who {trait}: {roasts['chosen']}",
+                "completion": primary,
+                "text": f"Roast someone who {trait}: {primary}",
+                "trait": trait,
             }
         )
-    # Add some augmented examples with different prompt formats
+        # Add additional variants for richer supervision.
+        for alt in chosen_variants[1:]:
+            sft_data.append(
+                {
+                    "prompt": f"Roast someone who {trait}:",
+                    "completion": alt,
+                    "text": f"Roast someone who {trait}: {alt}",
+                    "trait": trait,
+                }
+            )
+
+    # Add augmented prompt formats for robustness.
     augmented_prompts = [
         "Give a witty roast for someone who {}:",
         "Write a clever burn for a person who {}:",
         "Come up with a funny roast about someone who {}:",
     ]
-    for trait, roasts in ROAST_PAIRS.items():
+    for trait in all_traits:
         template = random.choice(augmented_prompts)
+        roasts = ROAST_PAIRS.get(trait)
+        chosen_variants = generic_witty_variants(trait, roasts["chosen"] if roasts else None)
         sft_data.append(
             {
                 "prompt": template.format(trait),
-                "completion": roasts["chosen"],
-                "text": f"{template.format(trait)} {roasts['chosen']}",
+                "completion": chosen_variants[0],
+                "text": f"{template.format(trait)} {chosen_variants[0]}",
+                "trait": trait,
             }
         )
     return sft_data
 
 
-def generate_preference_dataset():
+def generate_preference_dataset(all_traits):
     """Generate preference pairs: (prompt, chosen_roast, rejected_roast)."""
     preference_data = []
-    for trait, roasts in ROAST_PAIRS.items():
+    for trait in all_traits:
+        roasts = ROAST_PAIRS.get(trait)
+        chosen_variants = generic_witty_variants(trait, roasts["chosen"] if roasts else None)
+        rejected_variants = generic_rejected_variants(trait, roasts["rejected"] if roasts else None)
         prompt = f"Roast someone who {trait}:"
-        preference_data.append(
-            {
-                "prompt": prompt,
-                "chosen": roasts["chosen"],
-                "rejected": roasts["rejected"],
-            }
-        )
+        for chosen in chosen_variants[:3]:
+            for rej_type, rejected, pair_weight in rejected_variants:
+                preference_data.append(
+                    {
+                        "prompt": prompt,
+                        "trait": trait,
+                        "chosen": chosen,
+                        "rejected": rejected,
+                        "rejection_type": rej_type,
+                        "pair_weight": pair_weight,
+                    }
+                )
     return preference_data
 
 
-def generate_ppo_prompts():
+def generate_ppo_prompts(all_traits):
     """Generate prompts for PPO training (model generates completions at train time)."""
     ppo_prompts = []
-    for trait in TRAITS:
+    for trait in all_traits:
         ppo_prompts.append({"prompt": f"Roast someone who {trait}:", "trait": trait})
     return ppo_prompts
 
@@ -335,9 +461,11 @@ def main():
     random.seed(42)
     data_dir = os.path.join(os.path.dirname(__file__), "..", "data")
     os.makedirs(data_dir, exist_ok=True)
+    all_traits = build_expanded_traits()
+    unseen_traits = build_unseen_eval_traits(all_traits)
 
     # 1. SFT Dataset
-    sft_data = generate_sft_dataset()
+    sft_data = generate_sft_dataset(all_traits)
     sft_df = pd.DataFrame(sft_data)
     sft_df.to_json(os.path.join(data_dir, "sft_dataset.json"), orient="records", indent=2)
     sft_dataset = Dataset.from_pandas(sft_df)
@@ -345,7 +473,7 @@ def main():
     print(f"SFT dataset: {len(sft_data)} examples")
 
     # 2. Preference Dataset
-    pref_data = generate_preference_dataset()
+    pref_data = generate_preference_dataset(all_traits)
     pref_df = pd.DataFrame(pref_data)
     pref_df.to_json(
         os.path.join(data_dir, "preference_dataset.json"), orient="records", indent=2
@@ -355,12 +483,21 @@ def main():
     print(f"Preference dataset: {len(pref_data)} pairs")
 
     # 3. PPO Prompts
-    ppo_data = generate_ppo_prompts()
+    ppo_data = generate_ppo_prompts(all_traits)
     ppo_df = pd.DataFrame(ppo_data)
     ppo_df.to_json(os.path.join(data_dir, "ppo_prompts.json"), orient="records", indent=2)
     ppo_dataset = Dataset.from_pandas(ppo_df)
     ppo_dataset.save_to_disk(os.path.join(data_dir, "ppo_prompts"))
     print(f"PPO prompts: {len(ppo_data)} prompts")
+
+    # 4. Unseen eval prompts for final quality check
+    unseen_eval = [
+        {"prompt": f"Roast someone who {trait}:", "trait": trait}
+        for trait in unseen_traits
+    ]
+    with open(os.path.join(data_dir, "unseen_eval_prompts.json"), "w") as f:
+        json.dump(unseen_eval, f, indent=2)
+    print(f"Unseen eval prompts: {len(unseen_eval)} prompts")
 
     # Print some examples
     print("\n--- Example SFT data ---")

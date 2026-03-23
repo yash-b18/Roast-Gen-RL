@@ -12,6 +12,7 @@ import os
 import sys
 import json
 import socket
+import re
 
 import torch
 import torch.nn as nn
@@ -116,23 +117,72 @@ def clean_response(text):
     return result
 
 
-def generate(model, tok, prompt, max_new_tokens=100, temperature=0.8):
+STOPWORDS = {
+    "a", "an", "the", "and", "or", "to", "of", "in", "on", "at", "for", "with",
+    "is", "are", "be", "their", "they", "someone", "who", "has", "have", "too",
+    "always", "still", "uses", "using", "about", "your", "you",
+}
+
+
+def extract_trait(prompt):
+    trait = prompt.strip()
+    prefix = "Roast someone who "
+    if trait.startswith(prefix):
+        trait = trait[len(prefix):]
+    return trait.rstrip(":").strip().lower()
+
+
+def topic_overlap(prompt, response):
+    trait = extract_trait(prompt)
+    keywords = {
+        w for w in re.findall(r"[a-zA-Z']+", trait)
+        if len(w) > 2 and w not in STOPWORDS
+    }
+    if not keywords:
+        return 0.0
+    resp_words = set(re.findall(r"[a-zA-Z']+", response.lower()))
+    return len(keywords & resp_words) / len(keywords)
+
+
+def contradiction_flag(prompt, response):
+    trait = extract_trait(prompt)
+    response_lower = response.lower()
+    if "no hair" in trait and any(tok in response_lower for tok in ["beard", "ponytail", "hairline", "man bun"]):
+        return True
+    if "always late" in trait and any(tok in response_lower for tok in ["always early", "never late"]):
+        return True
+    if "obsessed with crypto" in trait and any(tok in response_lower for tok in ["hate crypto", "avoid crypto"]):
+        return True
+    return False
+
+
+def generate(model, tok, prompt, max_new_tokens=100, temperature=0.8, max_retries=2):
     inputs = tok(prompt, return_tensors="pt").to(device)
-    with torch.no_grad():
-        output = model.generate(
-            **inputs,
-            max_new_tokens=max_new_tokens,
-            do_sample=True,
-            temperature=temperature,
-            top_p=0.9,
-            top_k=50,
-            repetition_penalty=1.15,
-            no_repeat_ngram_size=3,
-            pad_token_id=tok.eos_token_id,
-        )
-    full = tok.decode(output[0], skip_special_tokens=True)
-    raw = full[len(prompt):].strip()
-    return clean_response(raw)
+    candidate = ""
+    best_overlap = -1.0
+    for _ in range(max_retries + 1):
+        with torch.no_grad():
+            output = model.generate(
+                **inputs,
+                max_new_tokens=max_new_tokens,
+                do_sample=True,
+                temperature=temperature,
+                top_p=0.9,
+                top_k=50,
+                repetition_penalty=1.18,
+                no_repeat_ngram_size=3,
+                pad_token_id=tok.eos_token_id,
+            )
+        full = tok.decode(output[0], skip_special_tokens=True)
+        raw = full[len(prompt):].strip()
+        cleaned = clean_response(raw)
+        overlap = topic_overlap(prompt, cleaned)
+        if overlap > best_overlap:
+            best_overlap = overlap
+            candidate = cleaned
+        if overlap >= 0.2 and not contradiction_flag(prompt, cleaned):
+            return cleaned
+    return candidate
 
 
 def score_text(text):
@@ -244,6 +294,8 @@ def format_metrics_table():
             f"{m['std_reward']:.4f}",
             f"{m['avg_toxicity']:.4f}",
             f"{m['avg_wit']:.4f}",
+            f"{m.get('avg_on_topic', 0.0):.4f}",
+            f"{m.get('contradiction_rate', 0.0):.4f}",
             f"{m['distinct_2']:.4f}",
             f"{m['avg_length_words']:.1f}",
         ])
@@ -284,6 +336,8 @@ def render_alignment_summary():
     toxicity_delta = alignment_summary.get("toxicity_delta_ppo_vs_sft", 0.0)
     diversity_delta = alignment_summary.get("diversity_delta_ppo_vs_sft", 0.0)
     wit_delta = alignment_summary.get("wit_delta_ppo_vs_sft", 0.0)
+    on_topic_delta = alignment_summary.get("on_topic_delta_ppo_vs_sft", 0.0)
+    contradiction_delta = alignment_summary.get("contradiction_delta_ppo_vs_sft", 0.0)
     status = alignment_summary.get("status", "unknown").upper()
     notes = alignment_summary.get("notes", [])
 
@@ -296,7 +350,9 @@ def render_alignment_summary():
         f"| Reward | {reward_delta:+.4f} |\n"
         f"| Toxicity | {toxicity_delta:+.4f} |\n"
         f"| Distinct-2 | {diversity_delta:+.4f} |\n"
-        f"| Wit Proxy | {wit_delta:+.4f} |\n\n"
+        f"| Wit Proxy | {wit_delta:+.4f} |\n"
+        f"| On-topic | {on_topic_delta:+.4f} |\n"
+        f"| Contradiction Rate | {contradiction_delta:+.4f} |\n\n"
         "**Notes**\n"
         f"{notes_md}"
     )
@@ -324,7 +380,7 @@ STEP_EXPLAINER = """
 
 | Step | What happens | Analogy |
 |------|-------------|---------|
-| **1. Dataset** | 50 witty/mean roast pairs collected | Writing a rubric for the joke contest |
+| **1. Dataset** | Larger preference sets with on-topic/contradiction negatives | Writing a stricter rubric for the joke contest |
 | **2. SFT** | GPT-2 reads the witty examples | Teaching a student with a textbook |
 | **3. Reward Model** | AI judge learns witty vs. mean | Hiring a professional comedy critic |
 | **4. PPO** | Generator optimizes for high scores | Student practicing for the critic's approval |
@@ -463,7 +519,7 @@ The model learned that **chosen** (witty) roasts should score higher than **reje
             gr.Markdown("### Final Evaluation: All Three Models")
             gr.Dataframe(
                 value=format_metrics_table(),
-                headers=["Model", "Avg Reward", "Std Reward", "Toxicity", "Wit Score", "Distinct-2", "Avg Length"],
+                headers=["Model", "Avg Reward", "Std Reward", "Toxicity", "Wit Score", "On-topic", "Contradiction", "Distinct-2", "Avg Length"],
             )
 
             gr.Markdown("---")

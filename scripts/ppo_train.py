@@ -25,6 +25,7 @@ import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModelForCausalLM, AutoModel
 from datasets import load_from_disk
 import numpy as np
+import re
 
 
 BASE_DIR = os.path.join(os.path.dirname(__file__), "..")
@@ -62,6 +63,58 @@ class ValueHead(nn.Module):
 
     def forward(self, hidden_states):
         return self.linear(hidden_states).squeeze(-1)
+
+
+STOPWORDS = {
+    "a", "an", "the", "and", "or", "to", "of", "in", "on", "at", "for", "with",
+    "is", "are", "be", "their", "they", "someone", "who", "has", "have", "too",
+    "always", "still", "uses", "using", "about", "your", "you",
+}
+
+
+def extract_trait(prompt):
+    trait = prompt.strip()
+    prefix = "Roast someone who "
+    if trait.startswith(prefix):
+        trait = trait[len(prefix):]
+    return trait.rstrip(":").strip().lower()
+
+
+def trait_keywords(trait):
+    words = re.findall(r"[a-zA-Z']+", trait.lower())
+    return {w for w in words if len(w) > 2 and w not in STOPWORDS}
+
+
+def topic_overlap_score(prompt, response):
+    keywords = trait_keywords(extract_trait(prompt))
+    if not keywords:
+        return 0.0
+    response_words = set(re.findall(r"[a-zA-Z']+", response.lower()))
+    overlap = len(keywords & response_words)
+    return overlap / len(keywords)
+
+
+def repetition_ratio(text):
+    words = re.findall(r"[a-zA-Z']+", text.lower())
+    if len(words) < 2:
+        return 0.0
+    bigrams = [tuple(words[i : i + 2]) for i in range(len(words) - 1)]
+    if not bigrams:
+        return 0.0
+    repeated = len(bigrams) - len(set(bigrams))
+    return repeated / len(bigrams)
+
+
+def contradiction_flag(prompt, response):
+    trait = extract_trait(prompt)
+    response_lower = response.lower()
+    if "no hair" in trait and any(tok in response_lower for tok in ["beard", "ponytail", "hairline", "man bun"]):
+        return 1.0
+    if "always late" in trait and any(tok in response_lower for tok in ["always early", "never late"]):
+        return 1.0
+    if "obsessed with crypto" in trait and any(tok in response_lower for tok in ["hate crypto", "avoid crypto"]):
+        return 1.0
+    return 0.0
 
 
 def get_log_probs(model, input_ids, attention_mask):
@@ -292,12 +345,13 @@ def main():
     num_epochs = 6
     batch_size = 4
     max_new_tokens = 60
-    kl_coef = 0.15
+    kl_coef = 0.12
     clip_eps = 0.2
     training_log = []
 
     print(f"\nStarting PPO training: {num_epochs} epochs, batch_size={batch_size}")
     print(f"KL coef: {kl_coef}, Clip eps: {clip_eps}")
+    print("Reward shaping: +topic_overlap -repetition -contradiction")
 
     for epoch in range(num_epochs):
         epoch_rewards = []
@@ -317,6 +371,9 @@ def main():
             generated_sequences = []
             responses = []
             policy_model.eval()
+            topic_scores = []
+            repetition_penalties = []
+            contradiction_penalties = []
             with torch.no_grad():
                 for prompt in batch_prompts:
                     enc = tokenizer(prompt, return_tensors="pt").to(device)
@@ -325,14 +382,18 @@ def main():
                         **enc,
                         max_new_tokens=max_new_tokens,
                         do_sample=True,
-                        temperature=0.8,
+                        temperature=0.7,
                         top_p=0.9,
+                        no_repeat_ngram_size=3,
                         pad_token_id=tokenizer.eos_token_id,
                     )[0]
                     prompt_lengths.append(prompt_len)
                     generated_sequences.append(seq)
                     response = tokenizer.decode(seq[prompt_len:], skip_special_tokens=True).strip()
                     responses.append(response)
+                    topic_scores.append(topic_overlap_score(prompt, response))
+                    repetition_penalties.append(repetition_ratio(response))
+                    contradiction_penalties.append(contradiction_flag(prompt, response))
             policy_model.train()
 
             max_len = max(seq.size(0) for seq in generated_sequences)
@@ -363,15 +424,42 @@ def main():
                 max_length=256,
             ).to(device)
             with torch.no_grad():
-                rewards = reward_model(
+                raw_rewards = reward_model(
                     reward_encodings["input_ids"], reward_encodings["attention_mask"]
                 )
+            topic_tensor = torch.tensor(topic_scores, dtype=raw_rewards.dtype, device=device)
+            repetition_tensor = torch.tensor(repetition_penalties, dtype=raw_rewards.dtype, device=device)
+            contradiction_tensor = torch.tensor(contradiction_penalties, dtype=raw_rewards.dtype, device=device)
+            rewards = (
+                raw_rewards
+                + 0.8 * topic_tensor
+                - 1.0 * repetition_tensor
+                - 1.3 * contradiction_tensor
+            )
 
             epoch_rewards.extend(rewards.tolist())
 
             # Log examples
-            for p, response, r in zip(batch_prompts, responses, rewards.tolist()):
-                epoch_examples.append({"prompt": p, "response": response, "reward": r})
+            for p, response, rr, r, t, rep, con in zip(
+                batch_prompts,
+                responses,
+                raw_rewards.tolist(),
+                rewards.tolist(),
+                topic_scores,
+                repetition_penalties,
+                contradiction_penalties,
+            ):
+                epoch_examples.append(
+                    {
+                        "prompt": p,
+                        "response": response,
+                        "reward_raw": rr,
+                        "reward_shaped": r,
+                        "topic_overlap": t,
+                        "repetition_ratio": rep,
+                        "contradiction_flag": con,
+                    }
+                )
 
             # PPO step
             prompt_lengths_tensor = [int(pl) for pl in prompt_lengths]
@@ -411,7 +499,11 @@ def main():
             f"Samples: {len(epoch_rewards)}"
         )
         for ex in epoch_examples[:2]:
-            print(f"  [{ex['reward']:.3f}] {ex['prompt'][:50]}... -> {ex['response'][:80]}...")
+            print(
+                f"  [raw={ex['reward_raw']:.3f} shaped={ex['reward_shaped']:.3f}] "
+                f"topic={ex['topic_overlap']:.2f} rep={ex['repetition_ratio']:.2f} con={ex['contradiction_flag']:.0f} "
+                f"{ex['prompt'][:40]}... -> {ex['response'][:70]}..."
+            )
 
     # Save PPO model
     print(f"\nSaving PPO-aligned model to {PPO_MODEL_DIR}")

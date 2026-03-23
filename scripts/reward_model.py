@@ -17,9 +17,6 @@ from torch.utils.data import DataLoader, Dataset
 from transformers import AutoTokenizer, AutoModel
 from datasets import load_from_disk
 import numpy as np
-from sklearn.metrics import accuracy_score
-
-
 BASE_DIR = os.path.join(os.path.dirname(__file__), "..")
 DATA_DIR = os.path.join(BASE_DIR, "data")
 MODEL_DIR = os.path.join(BASE_DIR, "models", "reward_model")
@@ -85,16 +82,21 @@ class PreferenceDataset(Dataset):
             "chosen_attention_mask": chosen_enc["attention_mask"].squeeze(0),
             "rejected_input_ids": rejected_enc["input_ids"].squeeze(0),
             "rejected_attention_mask": rejected_enc["attention_mask"].squeeze(0),
+            "pair_weight": torch.tensor(float(item.get("pair_weight", 1.0)), dtype=torch.float),
+            "rejection_type": item.get("rejection_type", "unknown"),
         }
 
 
-def preference_loss(chosen_rewards, rejected_rewards):
+def preference_loss(chosen_rewards, rejected_rewards, pair_weight=None):
     """
     Bradley-Terry preference loss.
     We want: reward(chosen) > reward(rejected)
     Loss = -log(sigmoid(r_chosen - r_rejected))
     """
-    return -torch.nn.functional.logsigmoid(chosen_rewards - rejected_rewards).mean()
+    losses = -torch.nn.functional.logsigmoid(chosen_rewards - rejected_rewards)
+    if pair_weight is not None:
+        losses = losses * pair_weight
+    return losses.mean()
 
 
 def main():
@@ -108,9 +110,13 @@ def main():
     print(f"Loaded {len(pref_data)} preference pairs")
 
     # Split into train/val
-    split_idx = int(0.8 * len(pref_data))
-    train_data = pref_data[:split_idx]
-    val_data = pref_data[split_idx:]
+    rng = np.random.default_rng(42)
+    indices = rng.permutation(len(pref_data))
+    split_idx = int(0.9 * len(pref_data))
+    train_idx = indices[:split_idx]
+    val_idx = indices[split_idx:]
+    train_data = [pref_data[i] for i in train_idx]
+    val_data = [pref_data[i] for i in val_idx]
     print(f"Train: {len(train_data)}, Val: {len(val_data)}")
 
     # Tokenizer and model
@@ -128,8 +134,8 @@ def main():
     # Dataloaders
     train_dataset = PreferenceDataset(train_data, tokenizer)
     val_dataset = PreferenceDataset(val_data, tokenizer)
-    train_loader = DataLoader(train_dataset, batch_size=4, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=4)
+    train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
+    val_loader = DataLoader(val_dataset, batch_size=16)
 
     # Optimizer
     optimizer = torch.optim.AdamW(
@@ -139,7 +145,7 @@ def main():
     )
 
     # Training loop
-    num_epochs = 10
+    num_epochs = 4
     best_val_acc = 0
     training_log = []
 
@@ -152,11 +158,12 @@ def main():
             chosen_mask = batch["chosen_attention_mask"].to(device)
             rejected_ids = batch["rejected_input_ids"].to(device)
             rejected_mask = batch["rejected_attention_mask"].to(device)
+            pair_weight = batch["pair_weight"].to(device)
 
             chosen_rewards = model(chosen_ids, chosen_mask)
             rejected_rewards = model(rejected_ids, rejected_mask)
 
-            loss = preference_loss(chosen_rewards, rejected_rewards)
+            loss = preference_loss(chosen_rewards, rejected_rewards, pair_weight)
 
             optimizer.zero_grad()
             loss.backward()
@@ -171,6 +178,7 @@ def main():
         val_total = 0
         val_chosen_rewards = []
         val_rejected_rewards = []
+        val_by_type = {}
 
         with torch.no_grad():
             for batch in val_loader:
@@ -178,14 +186,21 @@ def main():
                 chosen_mask = batch["chosen_attention_mask"].to(device)
                 rejected_ids = batch["rejected_input_ids"].to(device)
                 rejected_mask = batch["rejected_attention_mask"].to(device)
+                rejection_types = batch["rejection_type"]
 
                 c_rew = model(chosen_ids, chosen_mask)
                 r_rew = model(rejected_ids, rejected_mask)
 
-                val_correct += (c_rew > r_rew).sum().item()
+                correct_mask = c_rew > r_rew
+                val_correct += correct_mask.sum().item()
                 val_total += c_rew.size(0)
                 val_chosen_rewards.extend(c_rew.cpu().numpy())
                 val_rejected_rewards.extend(r_rew.cpu().numpy())
+                for i, rej_type in enumerate(rejection_types):
+                    if rej_type not in val_by_type:
+                        val_by_type[rej_type] = {"correct": 0, "total": 0}
+                    val_by_type[rej_type]["correct"] += int(correct_mask[i].item())
+                    val_by_type[rej_type]["total"] += 1
 
         val_acc = val_correct / val_total if val_total > 0 else 0
         avg_loss = np.mean(epoch_losses)
@@ -200,6 +215,10 @@ def main():
             "avg_chosen_reward": float(avg_chosen),
             "avg_rejected_reward": float(avg_rejected),
             "reward_gap": float(reward_gap),
+            "val_accuracy_by_rejection_type": {
+                k: (v["correct"] / v["total"] if v["total"] else 0.0)
+                for k, v in sorted(val_by_type.items())
+            },
         }
         training_log.append(log_entry)
 
@@ -211,6 +230,14 @@ def main():
             f"Rejected: {avg_rejected:.3f} | "
             f"Gap: {reward_gap:.3f}"
         )
+        if val_by_type:
+            by_type_str = ", ".join(
+                [
+                    f"{k}:{(v['correct'] / v['total'] if v['total'] else 0.0):.2%}"
+                    for k, v in sorted(val_by_type.items())
+                ]
+            )
+            print(f"  Val by rejection type -> {by_type_str}")
 
         if val_acc > best_val_acc:
             best_val_acc = val_acc
