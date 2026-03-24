@@ -1,0 +1,135 @@
+{
+  "metrics_summary": {
+    "Base GPT-2": {
+      "avg_reward": -2.056982765905559,
+      "std_reward": 2.537074342716053,
+      "avg_toxicity": 0.0005434782608695652,
+      "avg_wit": 0.027678571428571424,
+      "avg_on_topic": 0.11762896825396826,
+      "contradiction_rate": 0.0125,
+      "avg_length_words": 56.575,
+      "distinct_1": 0.25519222271321257,
+      "distinct_2": 0.6833108412055781
+    },
+    "SFT Model": {
+      "avg_reward": -0.6989894399419427,
+      "std_reward": 2.7228014680164008,
+      "avg_toxicity": 0.0,
+      "avg_wit": 0.08214285714285713,
+      "avg_on_topic": 0.9879166666666667,
+      "contradiction_rate": 0.0,
+      "avg_length_words": 67.4125,
+      "distinct_1": 0.11663267198219915,
+      "distinct_2": 0.28402032749858835
+    },
+    "PPO Model": {
+      "avg_reward": -0.6422310151159764,
+      "std_reward": 2.9743353546502553,
+      "avg_toxicity": 0.0,
+      "avg_wit": 0.01875,
+      "avg_on_topic": 0.99,
+      "contradiction_rate": 0.0,
+      "avg_length_words": 68.15,
+      "distinct_1": 0.04860601614086574,
+      "distinct_2": 0.08935219657483247
+    }
+  },
+  "alignment_summary": {
+    "reward_delta_ppo_vs_sft": 0.05675842482596638,
+    "toxicity_delta_ppo_vs_sft": 0.0,
+    "diversity_delta_ppo_vs_sft": -0.1946681309237559,
+    "wit_delta_ppo_vs_sft": -0.06339285714285713,
+    "on_topic_delta_ppo_vs_sft": 0.002083333333333326,
+    "contradiction_delta_ppo_vs_sft": 0.0,
+    "status": "mixed",
+    "notes": [
+      "Reward improved, but diversity dropped materially.",
+      "Distinct-2 is low (<0.3), suggesting repetition risk.",
+      "Wit proxy is lower for PPO than SFT.",
+      "Absolute PPO reward is still negative."
+    ]
+  },
+  "examples": {
+    "Base GPT-2": [
+      {
+        "prompt": "Roast someone who always late to meetings at family dinners:",
+        "response": "the other day I saw someone with a friend who was getting in a car accident, and I told her, \"I don't know what the hell's going on.\" I didn't know what was going on, so I told her, \"I know what's going on. This is what you have to deal with.\" And she said, \"No, I'm not going to help you.",
+        "full_text": "Roast someone who always late to meetings at family dinners: the other day I saw someone with a friend who was getting in a car accident, and I told her, \"I don't know what the hell's going on.\" I didn't know what was going on, so I told her, \"I know what's going on. This is what you have to deal with.\" And she said, \"No, I'm not going to help you."
+      },
+      {
+        "prompt": "Roast someone who always late to meetings while traveling:",
+        "response": "\u2022 If you are traveling on a Saturday, you can do that instead.\n\n\u2022 You can also use the hashtag #RavnFitnessDay.\n\n\u2022 If you are traveling on Sunday, you can use the hashtag #RavnFitnessDay.\n\n\u2022 You can also use the hashtag #RavnFitnessDay.\n\n\u2022 If you are",
+        "full_text": "Roast someone who always late to meetings while traveling:\n\n\u2022 If you are traveling on a Saturday, you can do that instead.\n\n\u2022 You can also use the hashtag #RavnFitnessDay.\n\n\u2022 If you are traveling on Sunday, you can use the hashtag #RavnFitnessDay.\n\n\u2022 You can also use the hashtag #RavnFitnessDay.\n\n\u2022 If you are"
+      },
+      {
+        "prompt": "Roast someone who always one-ups everyone's stories at family dinners:",
+        "response": "It's the best thing you can do for your kids!\n\nIf you're reading this and you're not sure which way you want to go next, you can always go to this thread on how to make a new batch of peanut butter.\n\nP.S. You might also like:",
+        "full_text": "Roast someone who always one-ups everyone's stories at family dinners: It's the best thing you can do for your kids!\n\nIf you're reading this and you're not sure which way you want to go next, you can always go to this thread on how to make a new batch of peanut butter.\n\nP.S. You might also like:"
+      },
+      {
+        "prompt": "Roast someone who always one-ups everyone's stories while traveling:",
+        "response": "I'm on a trip and a little while ago I saw an old friend who was a comedian who lived in a nice little house in the middle of nowhere in a big town. I was on the road, and I saw her face, and I said, \"Where's the house?\" and she said, \"I'm in a place, so I'm going to the house.\" So",
+        "full_text": "Roast someone who always one-ups everyone's stories while traveling:\n\nI'm on a trip and a little while ago I saw an old friend who was a comedian who lived in a nice little house in the middle of nowhere in a big town. I was on the road, and I saw her face, and I said, \"Where's the house?\" and she said, \"I'm in a place, so I'm going to the house.\" So"
+      },
+      {
+        "prompt": "Roast someone who always suggests hiking as a hangout at family dinners:",
+        "response": "\"I'm going to pick up a couple of cans of coffee and a couple of cans of tea. So if you don't want to drink, don't do this. If you're going to do this, you're not going to do this. You're going to do this. Do this. And you're not going to do this. Don't do this. You're not going to",
+        "full_text": "Roast someone who always suggests hiking as a hangout at family dinners: \"I'm going to pick up a couple of cans of coffee and a couple of cans of tea. So if you don't want to drink, don't do this. If you're going to do this, you're not going to do this. You're going to do this. Do this. And you're not going to do this. Don't do this. You're not going to"
+      }
+    ],
+    "SFT Model": [
+      {
+        "prompt": "Roast someone who always late to meetings at family dinners:",
+        "response": "You're not fashionably late \u2014 fashion has standards and a schedule. Your schedule is more rigid than your dating life and, like most social media influencers, it's not always smooth sailing. Your schedule is not your friend's calendar, and it's not always smooth sailing.\n\nYou're the final boss of people who always late to meetings at family dinners.\n\nYou're not fashion",
+        "full_text": "Roast someone who always late to meetings at family dinners:You're not fashionably late \u2014 fashion has standards and a schedule. Your schedule is more rigid than your dating life and, like most social media influencers, it's not always smooth sailing. Your schedule is not your friend's calendar, and it's not always smooth sailing.\n\nYou're the final boss of people who always late to meetings at family dinners.\n\nYou're not fashion"
+      },
+      {
+        "prompt": "Roast someone who always late to meetings while traveling:",
+        "response": "People who always late to meetings while traveling usually chill out eventually; you turned it into brand strategy. The only relationship you turned into brand strategy was one you turned into brand strategy. Success turned brand strategy into brand strategy for real. Your strategy turned into brand strategy for more than a decade. Your brand turned into brand strategy for more than a decade. Your brand turned into brand strategy for more than a",
+        "full_text": "Roast someone who always late to meetings while traveling:People who always late to meetings while traveling usually chill out eventually; you turned it into brand strategy. The only relationship you turned into brand strategy was one you turned into brand strategy. Success turned brand strategy into brand strategy for real. Your strategy turned into brand strategy for more than a decade. Your brand turned into brand strategy for more than a decade. Your brand turned into brand strategy for more than a"
+      },
+      {
+        "prompt": "Roast someone who always one-ups everyone's stories at family dinners:",
+        "response": "If commitment were a sport, people who always one-ups everyone's stories at family dinners would ask you for coaching. The harder you work, the harder it becomes to make the right decision. Your stories don't just have a face, they have a face that's been there for more than a decade. Your voice has a face and a history that's been there for more than a decade.",
+        "full_text": "Roast someone who always one-ups everyone's stories at family dinners:If commitment were a sport, people who always one-ups everyone's stories at family dinners would ask you for coaching. The harder you work, the harder it becomes to make the right decision. Your stories don't just have a face, they have a face that's been there for more than a decade. Your voice has a face and a history that's been there for more than a decade."
+      },
+      {
+        "prompt": "Roast someone who always one-ups everyone's stories while traveling:",
+        "response": "People who always one-ups everyone's stories while traveling usually chill out eventually; you turned it into brand strategy. Your brand strategy was never linear; it turned into brand strategy. Your brand strategy turned into brand strategy.\n\nYou turned it into brand strategy for three years. You turned it into brand strategy for three years.\n\nYou turned it into brand strategy for three years.",
+        "full_text": "Roast someone who always one-ups everyone's stories while traveling:People who always one-ups everyone's stories while traveling usually chill out eventually; you turned it into brand strategy. Your brand strategy was never linear; it turned into brand strategy. Your brand strategy turned into brand strategy.\n\nYou turned it into brand strategy for three years. You turned it into brand strategy for three years.\n\nYou turned it into brand strategy for three years.\n\n"
+      },
+      {
+        "prompt": "Roast someone who always suggests hiking as a hangout at family dinners:",
+        "response": "You're the final boss of people who always suggests hiking as a hangout at family dinners. Your personality is more personality than a tree falling in an empty forest.\n\nYou're the final boss of people who always suggests hiking as a hangout at family dinners. Your personality is more personality than a tree falling in an empty forest. 21 photos to watch if commitment were a sport.",
+        "full_text": "Roast someone who always suggests hiking as a hangout at family dinners:You're the final boss of people who always suggests hiking as a hangout at family dinners. Your personality is more personality than a tree falling in an empty forest.\n\nYou're the final boss of people who always suggests hiking as a hangout at family dinners. Your personality is more personality than a tree falling in an empty forest. 21 photos to watch if commitment were a sport.\n\n"
+      }
+    ],
+    "PPO Model": [
+      {
+        "prompt": "Roast someone who always late to meetings at family dinners:",
+        "response": "You're the final boss of people who always late to meetings at family dinners. You're the final boss of people who always late to meetings at family dinners. You're the final boss of people who always late to meetings at family dinners. You're the final boss of people who always late to meetings at family dinners. You're the final boss of people who always late to meetings at family dinners.",
+        "full_text": "Roast someone who always late to meetings at family dinners:You're the final boss of people who always late to meetings at family dinners. You're the final boss of people who always late to meetings at family dinners. You're the final boss of people who always late to meetings at family dinners. You're the final boss of people who always late to meetings at family dinners. You're the final boss of people who always late to meetings at family dinners."
+      },
+      {
+        "prompt": "Roast someone who always late to meetings while traveling:",
+        "response": "You're the final boss of people who always late to meetings while traveling. You're the final boss of people who always late to meetings while traveling. You're the final boss of people who always late to meetings while traveling. You're the final boss of people who always late to meetings while traveling. You're the final boss of people who always late to meetings while traveling. You're the final boss",
+        "full_text": "Roast someone who always late to meetings while traveling:You're the final boss of people who always late to meetings while traveling. You're the final boss of people who always late to meetings while traveling. You're the final boss of people who always late to meetings while traveling. You're the final boss of people who always late to meetings while traveling. You're the final boss of people who always late to meetings while traveling. You're the final boss"
+      },
+      {
+        "prompt": "Roast someone who always one-ups everyone's stories at family dinners:",
+        "response": "If someone were you, you would ask you for coaching. You're the final boss of people who always one-ups everyone's stories at family dinners. You're the final boss of people who always one-ups everyone's stories at family dinners. You're the final boss of people who always one-ups everyone's stories at family dinners. You're the final boss of people who always one-",
+        "full_text": "Roast someone who always one-ups everyone's stories at family dinners:If someone were you, you would ask you for coaching. You're the final boss of people who always one-ups everyone's stories at family dinners. You're the final boss of people who always one-ups everyone's stories at family dinners. You're the final boss of people who always one-ups everyone's stories at family dinners. You're the final boss of people who always one-"
+      },
+      {
+        "prompt": "Roast someone who always one-ups everyone's stories while traveling:",
+        "response": "You're the final boss of people who always one-ups everyone's stories while traveling. You're the final boss of people who always one-ups everyone's stories while traveling. You're the final boss of people who always one-ups everyone's stories while traveling. You're the final boss of people who always one-ups everyone's stories while traveling. You're the final boss of people who",
+        "full_text": "Roast someone who always one-ups everyone's stories while traveling:You're the final boss of people who always one-ups everyone's stories while traveling. You're the final boss of people who always one-ups everyone's stories while traveling. You're the final boss of people who always one-ups everyone's stories while traveling. You're the final boss of people who always one-ups everyone's stories while traveling. You're the final boss of people who"
+      },
+      {
+        "prompt": "Roast someone who always suggests hiking as a hangout at family dinners:",
+        "response": "If commitment were a sport, people who always suggests hiking as a hangout at family dinners would ask you for coaching. You're the final boss of people who always suggests hiking as a hangout at family dinners. You're the final boss of people who always suggests hiking as a hangout at family dinners. You're the final boss of people who always suggests hiking as a hangout at family dinners",
+        "full_text": "Roast someone who always suggests hiking as a hangout at family dinners:If commitment were a sport, people who always suggests hiking as a hangout at family dinners would ask you for coaching. You're the final boss of people who always suggests hiking as a hangout at family dinners. You're the final boss of people who always suggests hiking as a hangout at family dinners. You're the final boss of people who always suggests hiking as a hangout at family dinners"
+      }
+    ]
+  }
+}

@@ -1,0 +1,218 @@
+[
+  {
+    "epoch": 1,
+    "avg_reward": -0.11185491957939138,
+    "std_reward": 2.353151547789421,
+    "avg_kl": -0.4536673607779484,
+    "num_samples": 204,
+    "examples": [
+      {
+        "prompt": "Roast someone who brings a guitar to parties in group chats:",
+        "response": "People who brings an guitar to party in group talks usually chill out eventually; you turned it into brand strategy. The same goes for people who brings sunglasses to parties like a lost puppy. The only relationship in your life that's consistently fulfilling is the one you've always been with. Your profile photo has",
+        "reward_raw": -2.1172425746917725,
+        "reward_shaped": -1.514978289604187,
+        "topic_overlap": 0.8,
+        "repetition_ratio": 0.03773584905660377,
+        "contradiction_flag": 0.0
+      },
+      {
+        "prompt": "Roast someone who has 12 streaming subscriptions at work:",
+        "response": "If commitment were a sport, people who has12 streaming subscriptions in work would ask you for coaching.\n\nYou're the final boss of people who's 12 streaming subscription at work.\n. 12 streaming is your version of a high-quality workday and only slightly harder to master. The only",
+        "reward_raw": -3.044285297393799,
+        "reward_shaped": -2.2442853450775146,
+        "topic_overlap": 1.0,
+        "repetition_ratio": 0.0,
+        "contradiction_flag": 0.0
+      },
+      {
+        "prompt": "Roast someone who drives a Prius and won't shut up about it at work:",
+        "response": "If commitment were a sport, people who drives the Prius AND won't Shut Up About It at work would ask you for coaching.\n\nYou're the final boss of people who writes about commitment like a cheerleader fell on a keyboard. Your keyboard was never meant to be the final resting place",
+        "reward_raw": -1.0444213151931763,
+        "reward_shaped": -0.28442129492759705,
+        "topic_overlap": 1.0,
+        "repetition_ratio": 0.04,
+        "contradiction_flag": 0.0
+      }
+    ]
+  },
+  {
+    "epoch": 2,
+    "avg_reward": 0.5910031808284568,
+    "std_reward": 2.5763097836045667,
+    "avg_kl": -0.4838346501483637,
+    "num_samples": 204,
+    "examples": [
+      {
+        "prompt": "Roast someone who puts their Venmo in their dating profile on social media:",
+        "response": "If commitment were a sport, people who puts its Venmo into their dating profiles on social networking would ask you for coaching.\n\nIf commitment was a sport,...\n\nGet the facts, figures, and predictions right with Money.",
+        "reward_raw": -2.506182909011841,
+        "reward_shaped": -2.0299925804138184,
+        "topic_overlap": 0.6666666666666666,
+        "repetition_ratio": 0.05714285714285714,
+        "contradiction_flag": 0.0
+      },
+      {
+        "prompt": "Roast someone who writes 'sent from my iPhone' manually on social media:",
+        "response": "People who writes \"sent from My iPhone\" manually on Social Media usually chill out eventually; you turned it into brand strategy. Succeeding at the Olympics wasn't easy, but you turned that into brand identity.\n\nIf commitment were a sport, people who writes \"'sent from MY iPhone'",
+        "reward_raw": 2.125816822052002,
+        "reward_shaped": 2.8147056102752686,
+        "topic_overlap": 1.0,
+        "repetition_ratio": 0.1111111111111111,
+        "contradiction_flag": 0.0
+      },
+      {
+        "prompt": "Roast someone who brings a guitar to parties in group chats:",
+        "response": "People who brings an guitar to party in group chat usually chill out eventually; you turned it into brand strategy. Your brand strategy turned into brand identity.\n\nYou turned it onto the map.\n'Brand strategy' is the name of the game in the modern digital age. Your digital strategy turned",
+        "reward_raw": 2.5868911743164062,
+        "reward_shaped": 2.964850425720215,
+        "topic_overlap": 0.6,
+        "repetition_ratio": 0.10204081632653061,
+        "contradiction_flag": 0.0
+      }
+    ]
+  },
+  {
+    "epoch": 3,
+    "avg_reward": 1.3040480238622894,
+    "std_reward": 2.471928984434937,
+    "avg_kl": -0.5149504339285925,
+    "num_samples": 204,
+    "examples": [
+      {
+        "prompt": "Roast someone who brings their own pillow on flights at work:",
+        "response": "You're the final boss of people who brings theirs on flights in at work.\n\nYou're not final boss, but you're the last boss of person who brings hers on flights on work.",
+        "reward_raw": 3.8228402137756348,
+        "reward_shaped": 4.141550064086914,
+        "topic_overlap": 0.6,
+        "repetition_ratio": 0.16129032258064516,
+        "contradiction_flag": 0.0
+      },
+      {
+        "prompt": "Roast someone who has 12 streaming subscriptions at work:",
+        "response": "People who has twelve streaming subscriptions in work usually chill out eventually; you turned it into brand strategy.\n\nYou turned it onto brand strategy for a decade.\n\n\n\nYou were the final boss of people who has12 streaming subscriptions on work usually Chill out eventually \u2014 you turned that into brand identity",
+        "reward_raw": 0.6695066690444946,
+        "reward_shaped": 1.2042006254196167,
+        "topic_overlap": 1.0,
+        "repetition_ratio": 0.2653061224489796,
+        "contradiction_flag": 0.0
+      },
+      {
+        "prompt": "Roast someone who puts pineapple on pizza:",
+        "response": "You're the final boss of people who puts lime on pizza.\n\nYou're not fashionably stylish, but your personality is.",
+        "reward_raw": -1.4952629804611206,
+        "reward_shaped": -0.9619296193122864,
+        "topic_overlap": 0.6666666666666666,
+        "repetition_ratio": 0.0,
+        "contradiction_flag": 0.0
+      }
+    ]
+  },
+  {
+    "epoch": 4,
+    "avg_reward": 1.3116419008184297,
+    "std_reward": 2.543370552771555,
+    "avg_kl": -0.6343842591432964,
+    "num_samples": 204,
+    "examples": [
+      {
+        "prompt": "Roast someone who uses too many exclamation marks in emails at work:",
+        "response": "If commitment were a sport, people who uses so many exclamations in emailsat work would ask you for coaching.\n\nYou're the final boss of people who utilizes too many EXclamation Marks in emails AT work.",
+        "reward_raw": 2.1720948219299316,
+        "reward_shaped": 2.942682981491089,
+        "topic_overlap": 1.0,
+        "repetition_ratio": 0.029411764705882353,
+        "contradiction_flag": 0.0
+      },
+      {
+        "prompt": "Roast someone who uses Comic Sans unironically on social media:",
+        "response": "People who uses comic Sans unwisely on socialmedia usually chill out eventually; you turned it into brand strategy.You turned it onto brand strategy, and it's still going strong.",
+        "reward_raw": -0.9154759049415588,
+        "reward_shaped": -0.7026187777519226,
+        "topic_overlap": 0.4,
+        "repetition_ratio": 0.10714285714285714,
+        "contradiction_flag": 0.0
+      },
+      {
+        "prompt": "Roast someone who posts inspirational sunrise photos in group chats:",
+        "response": "If commitment were a sport, people who posts inspiring sunrise photos with in group chat would ask you for coaching. If commitment were an sport, someone who writes inspirational sunrise photographs in group meetings would askyou for coaching.(If commitment was a sport)\n\nCreativity is a skill, but commitment is",
+        "reward_raw": -2.4522244930267334,
+        "reward_shaped": -1.9284149408340454,
+        "topic_overlap": 0.8333333333333334,
+        "repetition_ratio": 0.14285714285714285,
+        "contradiction_flag": 0.0
+      }
+    ]
+  },
+  {
+    "epoch": 5,
+    "avg_reward": 0.6701594188663305,
+    "std_reward": 2.473939158233892,
+    "avg_kl": -0.6454652293640024,
+    "num_samples": 204,
+    "examples": [
+      {
+        "prompt": "Roast someone who always late to meetings at work:",
+        "response": "You're the final boss of people who always Late to meetings in work. You're the last boss of folks who alwaysLate to meetings with work.\n\nYou're not fashionably late \u2014 fashion has standards and a schedule. You schedule like an uninvited plus-one that doesn't ask",
+        "reward_raw": -2.829134464263916,
+        "reward_shaped": -2.1200435161590576,
+        "topic_overlap": 1.0,
+        "repetition_ratio": 0.09090909090909091,
+        "contradiction_flag": 0.0
+      },
+      {
+        "prompt": "Roast someone who puts their Venmo in their dating profile:",
+        "response": "You're the final boss of people who puts theirs in their date profile. Nobody asked you for dating advice. You turned it into brand strategy. You were the final leader of people with whom to put their VenMo in their profile.\n\nYou turned itinto brand strategy \u2014 the final product of",
+        "reward_raw": 1.0938355922698975,
+        "reward_shaped": 1.7713866233825684,
+        "topic_overlap": 1.0,
+        "repetition_ratio": 0.12244897959183673,
+        "contradiction_flag": 0.0
+      },
+      {
+        "prompt": "Roast someone who says 'let's circle back' in every meeting in group chats:",
+        "response": "You're the final boss of people who says \"let's Circle Back\" in every meetings in group chat. You're the ultimate boss of individuals who says \"'let'scircle back' so often that it's lost all meaning.\" \u2014 Manisha Bhandari\n\nIf commitment were a sport,",
+        "reward_raw": -0.6690526008605957,
+        "reward_shaped": -0.24405260384082794,
+        "topic_overlap": 0.625,
+        "repetition_ratio": 0.075,
+        "contradiction_flag": 0.0
+      }
+    ]
+  },
+  {
+    "epoch": 6,
+    "avg_reward": 0.42355261129491467,
+    "std_reward": 1.867375907922461,
+    "avg_kl": -0.66528279115172,
+    "num_samples": 204,
+    "examples": [
+      {
+        "prompt": "Roast someone who takes gym selfies constantly at work:",
+        "response": "You're the final boss of people who takes gyms constantly at Work. You're the Final Boss of people whom takes gym selfie constantly at WORK. You get the final say in the final game of person who takes Gyms constantlyat Work. Game over. Game on. Game upon game. Game",
+        "reward_raw": -2.5811150074005127,
+        "reward_shaped": -2.1702816486358643,
+        "topic_overlap": 0.8,
+        "repetition_ratio": 0.22916666666666666,
+        "contradiction_flag": 0.0
+      },
+      {
+        "prompt": "Roast someone who brings kale chips to potlucks at work:",
+        "response": "If commitment were a sport, people who brings ketchup to potls at work would ask you for coaching. You're the final boss of people who introduces kale chips at work. You are the final leader of people whom introduces kale chip at work who says, 'You're the last boss of humans",
+        "reward_raw": -1.9577332735061646,
+        "reward_shaped": -1.4577332735061646,
+        "topic_overlap": 0.8,
+        "repetition_ratio": 0.14,
+        "contradiction_flag": 0.0
+      },
+      {
+        "prompt": "Roast someone who writes 'sent from my iPhone' manually in group chats:",
+        "response": "If commitment were a sport, people who writes \"sent from My iPhone' automatically in group chat would ask you for coaching. You're the final boss of people who reads 'sent out' manually into the forest. You turned it into brand strategy. You became brand strategy overnight. <3",
+        "reward_raw": 1.3790518045425415,
+        "reward_shaped": 2.0203216075897217,
+        "topic_overlap": 0.8571428571428571,
+        "repetition_ratio": 0.044444444444444446,
+        "contradiction_flag": 0.0
+      }
+    ]
+  }
+]

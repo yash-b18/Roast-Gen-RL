@@ -1,0 +1,818 @@
+[
+  {
+    "prompt":"Roast someone who always late to meetings:",
+    "trait":"always late to meetings"
+  },
+  {
+    "prompt":"Roast someone who always late to meetings at work:",
+    "trait":"always late to meetings at work"
+  },
+  {
+    "prompt":"Roast someone who always late to meetings in group chats:",
+    "trait":"always late to meetings in group chats"
+  },
+  {
+    "prompt":"Roast someone who always late to meetings on social media:",
+    "trait":"always late to meetings on social media"
+  },
+  {
+    "prompt":"Roast someone who always one-ups everyone's stories:",
+    "trait":"always one-ups everyone's stories"
+  },
+  {
+    "prompt":"Roast someone who always one-ups everyone's stories at work:",
+    "trait":"always one-ups everyone's stories at work"
+  },
+  {
+    "prompt":"Roast someone who always one-ups everyone's stories in group chats:",
+    "trait":"always one-ups everyone's stories in group chats"
+  },
+  {
+    "prompt":"Roast someone who always one-ups everyone's stories on social media:",
+    "trait":"always one-ups everyone's stories on social media"
+  },
+  {
+    "prompt":"Roast someone who always suggests hiking as a hangout:",
+    "trait":"always suggests hiking as a hangout"
+  },
+  {
+    "prompt":"Roast someone who always suggests hiking as a hangout at work:",
+    "trait":"always suggests hiking as a hangout at work"
+  },
+  {
+    "prompt":"Roast someone who always suggests hiking as a hangout in group chats:",
+    "trait":"always suggests hiking as a hangout in group chats"
+  },
+  {
+    "prompt":"Roast someone who always suggests hiking as a hangout on social media:",
+    "trait":"always suggests hiking as a hangout on social media"
+  },
+  {
+    "prompt":"Roast someone who brags about waking up at 5am:",
+    "trait":"brags about waking up at 5am"
+  },
+  {
+    "prompt":"Roast someone who brags about waking up at 5am at work:",
+    "trait":"brags about waking up at 5am at work"
+  },
+  {
+    "prompt":"Roast someone who brags about waking up at 5am in group chats:",
+    "trait":"brags about waking up at 5am in group chats"
+  },
+  {
+    "prompt":"Roast someone who brags about waking up at 5am on social media:",
+    "trait":"brags about waking up at 5am on social media"
+  },
+  {
+    "prompt":"Roast someone who brings a guitar to parties:",
+    "trait":"brings a guitar to parties"
+  },
+  {
+    "prompt":"Roast someone who brings a guitar to parties at work:",
+    "trait":"brings a guitar to parties at work"
+  },
+  {
+    "prompt":"Roast someone who brings a guitar to parties in group chats:",
+    "trait":"brings a guitar to parties in group chats"
+  },
+  {
+    "prompt":"Roast someone who brings a guitar to parties on social media:",
+    "trait":"brings a guitar to parties on social media"
+  },
+  {
+    "prompt":"Roast someone who brings kale chips to potlucks:",
+    "trait":"brings kale chips to potlucks"
+  },
+  {
+    "prompt":"Roast someone who brings kale chips to potlucks at work:",
+    "trait":"brings kale chips to potlucks at work"
+  },
+  {
+    "prompt":"Roast someone who brings kale chips to potlucks in group chats:",
+    "trait":"brings kale chips to potlucks in group chats"
+  },
+  {
+    "prompt":"Roast someone who brings kale chips to potlucks on social media:",
+    "trait":"brings kale chips to potlucks on social media"
+  },
+  {
+    "prompt":"Roast someone who brings their own pillow on flights:",
+    "trait":"brings their own pillow on flights"
+  },
+  {
+    "prompt":"Roast someone who brings their own pillow on flights at work:",
+    "trait":"brings their own pillow on flights at work"
+  },
+  {
+    "prompt":"Roast someone who brings their own pillow on flights in group chats:",
+    "trait":"brings their own pillow on flights in group chats"
+  },
+  {
+    "prompt":"Roast someone who brings their own pillow on flights on social media:",
+    "trait":"brings their own pillow on flights on social media"
+  },
+  {
+    "prompt":"Roast someone who collects Funko Pops:",
+    "trait":"collects Funko Pops"
+  },
+  {
+    "prompt":"Roast someone who collects Funko Pops at work:",
+    "trait":"collects Funko Pops at work"
+  },
+  {
+    "prompt":"Roast someone who collects Funko Pops in group chats:",
+    "trait":"collects Funko Pops in group chats"
+  },
+  {
+    "prompt":"Roast someone who collects Funko Pops on social media:",
+    "trait":"collects Funko Pops on social media"
+  },
+  {
+    "prompt":"Roast someone who drives a Prius and won't shut up about it:",
+    "trait":"drives a Prius and won't shut up about it"
+  },
+  {
+    "prompt":"Roast someone who drives a Prius and won't shut up about it at work:",
+    "trait":"drives a Prius and won't shut up about it at work"
+  },
+  {
+    "prompt":"Roast someone who drives a Prius and won't shut up about it in group chats:",
+    "trait":"drives a Prius and won't shut up about it in group chats"
+  },
+  {
+    "prompt":"Roast someone who drives a Prius and won't shut up about it on social media:",
+    "trait":"drives a Prius and won't shut up about it on social media"
+  },
+  {
+    "prompt":"Roast someone who eats loud snacks during Zoom calls:",
+    "trait":"eats loud snacks during Zoom calls"
+  },
+  {
+    "prompt":"Roast someone who eats loud snacks during Zoom calls at work:",
+    "trait":"eats loud snacks during Zoom calls at work"
+  },
+  {
+    "prompt":"Roast someone who eats loud snacks during Zoom calls in group chats:",
+    "trait":"eats loud snacks during Zoom calls in group chats"
+  },
+  {
+    "prompt":"Roast someone who eats loud snacks during Zoom calls on social media:",
+    "trait":"eats loud snacks during Zoom calls on social media"
+  },
+  {
+    "prompt":"Roast someone who gives unsolicited book recommendations:",
+    "trait":"gives unsolicited book recommendations"
+  },
+  {
+    "prompt":"Roast someone who gives unsolicited book recommendations at work:",
+    "trait":"gives unsolicited book recommendations at work"
+  },
+  {
+    "prompt":"Roast someone who gives unsolicited book recommendations in group chats:",
+    "trait":"gives unsolicited book recommendations in group chats"
+  },
+  {
+    "prompt":"Roast someone who gives unsolicited book recommendations on social media:",
+    "trait":"gives unsolicited book recommendations on social media"
+  },
+  {
+    "prompt":"Roast someone who has 12 streaming subscriptions:",
+    "trait":"has 12 streaming subscriptions"
+  },
+  {
+    "prompt":"Roast someone who has 12 streaming subscriptions at work:",
+    "trait":"has 12 streaming subscriptions at work"
+  },
+  {
+    "prompt":"Roast someone who has 12 streaming subscriptions in group chats:",
+    "trait":"has 12 streaming subscriptions in group chats"
+  },
+  {
+    "prompt":"Roast someone who has 12 streaming subscriptions on social media:",
+    "trait":"has 12 streaming subscriptions on social media"
+  },
+  {
+    "prompt":"Roast someone who has 47 unread notifications:",
+    "trait":"has 47 unread notifications"
+  },
+  {
+    "prompt":"Roast someone who has 47 unread notifications at work:",
+    "trait":"has 47 unread notifications at work"
+  },
+  {
+    "prompt":"Roast someone who has 47 unread notifications in group chats:",
+    "trait":"has 47 unread notifications in group chats"
+  },
+  {
+    "prompt":"Roast someone who has 47 unread notifications on social media:",
+    "trait":"has 47 unread notifications on social media"
+  },
+  {
+    "prompt":"Roast someone who has a man bun:",
+    "trait":"has a man bun"
+  },
+  {
+    "prompt":"Roast someone who has a man bun at work:",
+    "trait":"has a man bun at work"
+  },
+  {
+    "prompt":"Roast someone who has a man bun in group chats:",
+    "trait":"has a man bun in group chats"
+  },
+  {
+    "prompt":"Roast someone who has a man bun on social media:",
+    "trait":"has a man bun on social media"
+  },
+  {
+    "prompt":"Roast someone who has a motivational quote as their wallpaper:",
+    "trait":"has a motivational quote as their wallpaper"
+  },
+  {
+    "prompt":"Roast someone who has a motivational quote as their wallpaper at work:",
+    "trait":"has a motivational quote as their wallpaper at work"
+  },
+  {
+    "prompt":"Roast someone who has a motivational quote as their wallpaper in group chats:",
+    "trait":"has a motivational quote as their wallpaper in group chats"
+  },
+  {
+    "prompt":"Roast someone who has a motivational quote as their wallpaper on social media:",
+    "trait":"has a motivational quote as their wallpaper on social media"
+  },
+  {
+    "prompt":"Roast someone who has a podcast nobody listens to:",
+    "trait":"has a podcast nobody listens to"
+  },
+  {
+    "prompt":"Roast someone who has a podcast nobody listens to at work:",
+    "trait":"has a podcast nobody listens to at work"
+  },
+  {
+    "prompt":"Roast someone who has a podcast nobody listens to in group chats:",
+    "trait":"has a podcast nobody listens to in group chats"
+  },
+  {
+    "prompt":"Roast someone who has a podcast nobody listens to on social media:",
+    "trait":"has a podcast nobody listens to on social media"
+  },
+  {
+    "prompt":"Roast someone who has a ring light for casual video calls:",
+    "trait":"has a ring light for casual video calls"
+  },
+  {
+    "prompt":"Roast someone who has a ring light for casual video calls at work:",
+    "trait":"has a ring light for casual video calls at work"
+  },
+  {
+    "prompt":"Roast someone who has a ring light for casual video calls in group chats:",
+    "trait":"has a ring light for casual video calls in group chats"
+  },
+  {
+    "prompt":"Roast someone who has a ring light for casual video calls on social media:",
+    "trait":"has a ring light for casual video calls on social media"
+  },
+  {
+    "prompt":"Roast someone who has a standing desk and tells everyone:",
+    "trait":"has a standing desk and tells everyone"
+  },
+  {
+    "prompt":"Roast someone who has a standing desk and tells everyone at work:",
+    "trait":"has a standing desk and tells everyone at work"
+  },
+  {
+    "prompt":"Roast someone who has a standing desk and tells everyone in group chats:",
+    "trait":"has a standing desk and tells everyone in group chats"
+  },
+  {
+    "prompt":"Roast someone who has a standing desk and tells everyone on social media:",
+    "trait":"has a standing desk and tells everyone on social media"
+  },
+  {
+    "prompt":"Roast someone who has an emotional support water bottle:",
+    "trait":"has an emotional support water bottle"
+  },
+  {
+    "prompt":"Roast someone who has an emotional support water bottle at work:",
+    "trait":"has an emotional support water bottle at work"
+  },
+  {
+    "prompt":"Roast someone who has an emotional support water bottle in group chats:",
+    "trait":"has an emotional support water bottle in group chats"
+  },
+  {
+    "prompt":"Roast someone who has an emotional support water bottle on social media:",
+    "trait":"has an emotional support water bottle on social media"
+  },
+  {
+    "prompt":"Roast someone who has no hair:",
+    "trait":"has no hair"
+  },
+  {
+    "prompt":"Roast someone who has no hair at work:",
+    "trait":"has no hair at work"
+  },
+  {
+    "prompt":"Roast someone who has no hair in group chats:",
+    "trait":"has no hair in group chats"
+  },
+  {
+    "prompt":"Roast someone who has no hair on social media:",
+    "trait":"has no hair on social media"
+  },
+  {
+    "prompt":"Roast someone who has read zero books this year but has opinions:",
+    "trait":"has read zero books this year but has opinions"
+  },
+  {
+    "prompt":"Roast someone who has read zero books this year but has opinions at work:",
+    "trait":"has read zero books this year but has opinions at work"
+  },
+  {
+    "prompt":"Roast someone who has read zero books this year but has opinions in group chats:",
+    "trait":"has read zero books this year but has opinions in group chats"
+  },
+  {
+    "prompt":"Roast someone who has read zero books this year but has opinions on social media:",
+    "trait":"has read zero books this year but has opinions on social media"
+  },
+  {
+    "prompt":"Roast someone who has strong opinions about fonts:",
+    "trait":"has strong opinions about fonts"
+  },
+  {
+    "prompt":"Roast someone who has strong opinions about fonts at work:",
+    "trait":"has strong opinions about fonts at work"
+  },
+  {
+    "prompt":"Roast someone who has strong opinions about fonts in group chats:",
+    "trait":"has strong opinions about fonts in group chats"
+  },
+  {
+    "prompt":"Roast someone who has strong opinions about fonts on social media:",
+    "trait":"has strong opinions about fonts on social media"
+  },
+  {
+    "prompt":"Roast someone who is a self-proclaimed foodie:",
+    "trait":"is a self-proclaimed foodie"
+  },
+  {
+    "prompt":"Roast someone who is a self-proclaimed foodie at work:",
+    "trait":"is a self-proclaimed foodie at work"
+  },
+  {
+    "prompt":"Roast someone who is a self-proclaimed foodie in group chats:",
+    "trait":"is a self-proclaimed foodie in group chats"
+  },
+  {
+    "prompt":"Roast someone who is a self-proclaimed foodie on social media:",
+    "trait":"is a self-proclaimed foodie on social media"
+  },
+  {
+    "prompt":"Roast someone who is always on speakerphone in public:",
+    "trait":"is always on speakerphone in public"
+  },
+  {
+    "prompt":"Roast someone who is always on speakerphone in public at work:",
+    "trait":"is always on speakerphone in public at work"
+  },
+  {
+    "prompt":"Roast someone who is always on speakerphone in public in group chats:",
+    "trait":"is always on speakerphone in public in group chats"
+  },
+  {
+    "prompt":"Roast someone who is always on speakerphone in public on social media:",
+    "trait":"is always on speakerphone in public on social media"
+  },
+  {
+    "prompt":"Roast someone who microwaves fish in the office:",
+    "trait":"microwaves fish in the office"
+  },
+  {
+    "prompt":"Roast someone who microwaves fish in the office at work:",
+    "trait":"microwaves fish in the office at work"
+  },
+  {
+    "prompt":"Roast someone who microwaves fish in the office in group chats:",
+    "trait":"microwaves fish in the office in group chats"
+  },
+  {
+    "prompt":"Roast someone who microwaves fish in the office on social media:",
+    "trait":"microwaves fish in the office on social media"
+  },
+  {
+    "prompt":"Roast someone who obsessed with crypto:",
+    "trait":"obsessed with crypto"
+  },
+  {
+    "prompt":"Roast someone who obsessed with crypto at work:",
+    "trait":"obsessed with crypto at work"
+  },
+  {
+    "prompt":"Roast someone who obsessed with crypto in group chats:",
+    "trait":"obsessed with crypto in group chats"
+  },
+  {
+    "prompt":"Roast someone who obsessed with crypto on social media:",
+    "trait":"obsessed with crypto on social media"
+  },
+  {
+    "prompt":"Roast someone who overuses the word 'synergy':",
+    "trait":"overuses the word 'synergy'"
+  },
+  {
+    "prompt":"Roast someone who overuses the word 'synergy' at work:",
+    "trait":"overuses the word 'synergy' at work"
+  },
+  {
+    "prompt":"Roast someone who overuses the word 'synergy' in group chats:",
+    "trait":"overuses the word 'synergy' in group chats"
+  },
+  {
+    "prompt":"Roast someone who overuses the word 'synergy' on social media:",
+    "trait":"overuses the word 'synergy' on social media"
+  },
+  {
+    "prompt":"Roast someone who peaked in high school:",
+    "trait":"peaked in high school"
+  },
+  {
+    "prompt":"Roast someone who peaked in high school at work:",
+    "trait":"peaked in high school at work"
+  },
+  {
+    "prompt":"Roast someone who peaked in high school in group chats:",
+    "trait":"peaked in high school in group chats"
+  },
+  {
+    "prompt":"Roast someone who peaked in high school on social media:",
+    "trait":"peaked in high school on social media"
+  },
+  {
+    "prompt":"Roast someone who plays devil's advocate constantly:",
+    "trait":"plays devil's advocate constantly"
+  },
+  {
+    "prompt":"Roast someone who plays devil's advocate constantly at work:",
+    "trait":"plays devil's advocate constantly at work"
+  },
+  {
+    "prompt":"Roast someone who plays devil's advocate constantly in group chats:",
+    "trait":"plays devil's advocate constantly in group chats"
+  },
+  {
+    "prompt":"Roast someone who plays devil's advocate constantly on social media:",
+    "trait":"plays devil's advocate constantly on social media"
+  },
+  {
+    "prompt":"Roast someone who posts inspirational sunrise photos:",
+    "trait":"posts inspirational sunrise photos"
+  },
+  {
+    "prompt":"Roast someone who posts inspirational sunrise photos at work:",
+    "trait":"posts inspirational sunrise photos at work"
+  },
+  {
+    "prompt":"Roast someone who posts inspirational sunrise photos in group chats:",
+    "trait":"posts inspirational sunrise photos in group chats"
+  },
+  {
+    "prompt":"Roast someone who posts inspirational sunrise photos on social media:",
+    "trait":"posts inspirational sunrise photos on social media"
+  },
+  {
+    "prompt":"Roast someone who puts pineapple on pizza:",
+    "trait":"puts pineapple on pizza"
+  },
+  {
+    "prompt":"Roast someone who puts pineapple on pizza at work:",
+    "trait":"puts pineapple on pizza at work"
+  },
+  {
+    "prompt":"Roast someone who puts pineapple on pizza in group chats:",
+    "trait":"puts pineapple on pizza in group chats"
+  },
+  {
+    "prompt":"Roast someone who puts pineapple on pizza on social media:",
+    "trait":"puts pineapple on pizza on social media"
+  },
+  {
+    "prompt":"Roast someone who puts their Venmo in their dating profile:",
+    "trait":"puts their Venmo in their dating profile"
+  },
+  {
+    "prompt":"Roast someone who puts their Venmo in their dating profile at work:",
+    "trait":"puts their Venmo in their dating profile at work"
+  },
+  {
+    "prompt":"Roast someone who puts their Venmo in their dating profile in group chats:",
+    "trait":"puts their Venmo in their dating profile in group chats"
+  },
+  {
+    "prompt":"Roast someone who puts their Venmo in their dating profile on social media:",
+    "trait":"puts their Venmo in their dating profile on social media"
+  },
+  {
+    "prompt":"Roast someone who replies all to every email:",
+    "trait":"replies all to every email"
+  },
+  {
+    "prompt":"Roast someone who replies all to every email at work:",
+    "trait":"replies all to every email at work"
+  },
+  {
+    "prompt":"Roast someone who replies all to every email in group chats:",
+    "trait":"replies all to every email in group chats"
+  },
+  {
+    "prompt":"Roast someone who replies all to every email on social media:",
+    "trait":"replies all to every email on social media"
+  },
+  {
+    "prompt":"Roast someone who says 'let's circle back' in every meeting:",
+    "trait":"says 'let's circle back' in every meeting"
+  },
+  {
+    "prompt":"Roast someone who says 'let's circle back' in every meeting at work:",
+    "trait":"says 'let's circle back' in every meeting at work"
+  },
+  {
+    "prompt":"Roast someone who says 'let's circle back' in every meeting in group chats:",
+    "trait":"says 'let's circle back' in every meeting in group chats"
+  },
+  {
+    "prompt":"Roast someone who says 'let's circle back' in every meeting on social media:",
+    "trait":"says 'let's circle back' in every meeting on social media"
+  },
+  {
+    "prompt":"Roast someone who sends voice messages instead of texts:",
+    "trait":"sends voice messages instead of texts"
+  },
+  {
+    "prompt":"Roast someone who sends voice messages instead of texts at work:",
+    "trait":"sends voice messages instead of texts at work"
+  },
+  {
+    "prompt":"Roast someone who sends voice messages instead of texts in group chats:",
+    "trait":"sends voice messages instead of texts in group chats"
+  },
+  {
+    "prompt":"Roast someone who sends voice messages instead of texts on social media:",
+    "trait":"sends voice messages instead of texts on social media"
+  },
+  {
+    "prompt":"Roast someone who still quotes Borat:",
+    "trait":"still quotes Borat"
+  },
+  {
+    "prompt":"Roast someone who still quotes Borat at work:",
+    "trait":"still quotes Borat at work"
+  },
+  {
+    "prompt":"Roast someone who still quotes Borat in group chats:",
+    "trait":"still quotes Borat in group chats"
+  },
+  {
+    "prompt":"Roast someone who still quotes Borat on social media:",
+    "trait":"still quotes Borat on social media"
+  },
+  {
+    "prompt":"Roast someone who still uses Internet Explorer:",
+    "trait":"still uses Internet Explorer"
+  },
+  {
+    "prompt":"Roast someone who still uses Internet Explorer at work:",
+    "trait":"still uses Internet Explorer at work"
+  },
+  {
+    "prompt":"Roast someone who still uses Internet Explorer in group chats:",
+    "trait":"still uses Internet Explorer in group chats"
+  },
+  {
+    "prompt":"Roast someone who still uses Internet Explorer on social media:",
+    "trait":"still uses Internet Explorer on social media"
+  },
+  {
+    "prompt":"Roast someone who still uses a flip phone by choice:",
+    "trait":"still uses a flip phone by choice"
+  },
+  {
+    "prompt":"Roast someone who still uses a flip phone by choice at work:",
+    "trait":"still uses a flip phone by choice at work"
+  },
+  {
+    "prompt":"Roast someone who still uses a flip phone by choice in group chats:",
+    "trait":"still uses a flip phone by choice in group chats"
+  },
+  {
+    "prompt":"Roast someone who still uses a flip phone by choice on social media:",
+    "trait":"still uses a flip phone by choice on social media"
+  },
+  {
+    "prompt":"Roast someone who takes gym selfies constantly:",
+    "trait":"takes gym selfies constantly"
+  },
+  {
+    "prompt":"Roast someone who takes gym selfies constantly at work:",
+    "trait":"takes gym selfies constantly at work"
+  },
+  {
+    "prompt":"Roast someone who takes gym selfies constantly in group chats:",
+    "trait":"takes gym selfies constantly in group chats"
+  },
+  {
+    "prompt":"Roast someone who takes gym selfies constantly on social media:",
+    "trait":"takes gym selfies constantly on social media"
+  },
+  {
+    "prompt":"Roast someone who talks too much about their cat:",
+    "trait":"talks too much about their cat"
+  },
+  {
+    "prompt":"Roast someone who talks too much about their cat at work:",
+    "trait":"talks too much about their cat at work"
+  },
+  {
+    "prompt":"Roast someone who talks too much about their cat in group chats:",
+    "trait":"talks too much about their cat in group chats"
+  },
+  {
+    "prompt":"Roast someone who talks too much about their cat on social media:",
+    "trait":"talks too much about their cat on social media"
+  },
+  {
+    "prompt":"Roast someone who thinks they're a LinkedIn influencer:",
+    "trait":"thinks they're a LinkedIn influencer"
+  },
+  {
+    "prompt":"Roast someone who thinks they're a LinkedIn influencer at work:",
+    "trait":"thinks they're a LinkedIn influencer at work"
+  },
+  {
+    "prompt":"Roast someone who thinks they're a LinkedIn influencer in group chats:",
+    "trait":"thinks they're a LinkedIn influencer in group chats"
+  },
+  {
+    "prompt":"Roast someone who thinks they're a LinkedIn influencer on social media:",
+    "trait":"thinks they're a LinkedIn influencer on social media"
+  },
+  {
+    "prompt":"Roast someone who thinks they're a wine expert:",
+    "trait":"thinks they're a wine expert"
+  },
+  {
+    "prompt":"Roast someone who thinks they're a wine expert at work:",
+    "trait":"thinks they're a wine expert at work"
+  },
+  {
+    "prompt":"Roast someone who thinks they're a wine expert in group chats:",
+    "trait":"thinks they're a wine expert in group chats"
+  },
+  {
+    "prompt":"Roast someone who thinks they're a wine expert on social media:",
+    "trait":"thinks they're a wine expert on social media"
+  },
+  {
+    "prompt":"Roast someone who treats fantasy football like a real job:",
+    "trait":"treats fantasy football like a real job"
+  },
+  {
+    "prompt":"Roast someone who treats fantasy football like a real job at work:",
+    "trait":"treats fantasy football like a real job at work"
+  },
+  {
+    "prompt":"Roast someone who treats fantasy football like a real job in group chats:",
+    "trait":"treats fantasy football like a real job in group chats"
+  },
+  {
+    "prompt":"Roast someone who treats fantasy football like a real job on social media:",
+    "trait":"treats fantasy football like a real job on social media"
+  },
+  {
+    "prompt":"Roast someone who types with two fingers:",
+    "trait":"types with two fingers"
+  },
+  {
+    "prompt":"Roast someone who types with two fingers at work:",
+    "trait":"types with two fingers at work"
+  },
+  {
+    "prompt":"Roast someone who types with two fingers in group chats:",
+    "trait":"types with two fingers in group chats"
+  },
+  {
+    "prompt":"Roast someone who types with two fingers on social media:",
+    "trait":"types with two fingers on social media"
+  },
+  {
+    "prompt":"Roast someone who uses 'per my last email' aggressively:",
+    "trait":"uses 'per my last email' aggressively"
+  },
+  {
+    "prompt":"Roast someone who uses 'per my last email' aggressively at work:",
+    "trait":"uses 'per my last email' aggressively at work"
+  },
+  {
+    "prompt":"Roast someone who uses 'per my last email' aggressively in group chats:",
+    "trait":"uses 'per my last email' aggressively in group chats"
+  },
+  {
+    "prompt":"Roast someone who uses 'per my last email' aggressively on social media:",
+    "trait":"uses 'per my last email' aggressively on social media"
+  },
+  {
+    "prompt":"Roast someone who uses Comic Sans unironically:",
+    "trait":"uses Comic Sans unironically"
+  },
+  {
+    "prompt":"Roast someone who uses Comic Sans unironically at work:",
+    "trait":"uses Comic Sans unironically at work"
+  },
+  {
+    "prompt":"Roast someone who uses Comic Sans unironically in group chats:",
+    "trait":"uses Comic Sans unironically in group chats"
+  },
+  {
+    "prompt":"Roast someone who uses Comic Sans unironically on social media:",
+    "trait":"uses Comic Sans unironically on social media"
+  },
+  {
+    "prompt":"Roast someone who uses hashtags in real conversation:",
+    "trait":"uses hashtags in real conversation"
+  },
+  {
+    "prompt":"Roast someone who uses hashtags in real conversation at work:",
+    "trait":"uses hashtags in real conversation at work"
+  },
+  {
+    "prompt":"Roast someone who uses hashtags in real conversation in group chats:",
+    "trait":"uses hashtags in real conversation in group chats"
+  },
+  {
+    "prompt":"Roast someone who uses hashtags in real conversation on social media:",
+    "trait":"uses hashtags in real conversation on social media"
+  },
+  {
+    "prompt":"Roast someone who uses too many exclamation marks in emails:",
+    "trait":"uses too many exclamation marks in emails"
+  },
+  {
+    "prompt":"Roast someone who uses too many exclamation marks in emails at work:",
+    "trait":"uses too many exclamation marks in emails at work"
+  },
+  {
+    "prompt":"Roast someone who uses too many exclamation marks in emails in group chats:",
+    "trait":"uses too many exclamation marks in emails in group chats"
+  },
+  {
+    "prompt":"Roast someone who uses too many exclamation marks in emails on social media:",
+    "trait":"uses too many exclamation marks in emails on social media"
+  },
+  {
+    "prompt":"Roast someone who wears a Patagonia vest to every occasion:",
+    "trait":"wears a Patagonia vest to every occasion"
+  },
+  {
+    "prompt":"Roast someone who wears a Patagonia vest to every occasion at work:",
+    "trait":"wears a Patagonia vest to every occasion at work"
+  },
+  {
+    "prompt":"Roast someone who wears a Patagonia vest to every occasion in group chats:",
+    "trait":"wears a Patagonia vest to every occasion in group chats"
+  },
+  {
+    "prompt":"Roast someone who wears a Patagonia vest to every occasion on social media:",
+    "trait":"wears a Patagonia vest to every occasion on social media"
+  },
+  {
+    "prompt":"Roast someone who wears sunglasses indoors:",
+    "trait":"wears sunglasses indoors"
+  },
+  {
+    "prompt":"Roast someone who wears sunglasses indoors at work:",
+    "trait":"wears sunglasses indoors at work"
+  },
+  {
+    "prompt":"Roast someone who wears sunglasses indoors in group chats:",
+    "trait":"wears sunglasses indoors in group chats"
+  },
+  {
+    "prompt":"Roast someone who wears sunglasses indoors on social media:",
+    "trait":"wears sunglasses indoors on social media"
+  },
+  {
+    "prompt":"Roast someone who writes 'sent from my iPhone' manually:",
+    "trait":"writes 'sent from my iPhone' manually"
+  },
+  {
+    "prompt":"Roast someone who writes 'sent from my iPhone' manually at work:",
+    "trait":"writes 'sent from my iPhone' manually at work"
+  },
+  {
+    "prompt":"Roast someone who writes 'sent from my iPhone' manually in group chats:",
+    "trait":"writes 'sent from my iPhone' manually in group chats"
+  },
+  {
+    "prompt":"Roast someone who writes 'sent from my iPhone' manually on social media:",
+    "trait":"writes 'sent from my iPhone' manually on social media"
+  }
+]

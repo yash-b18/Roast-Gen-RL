@@ -1,0 +1,58 @@
+[
+  {
+    "epoch": 1,
+    "train_loss": 0.4961482505979283,
+    "val_accuracy": 0.9899497487437185,
+    "avg_chosen_reward": -0.9521843194961548,
+    "avg_rejected_reward": -4.111414432525635,
+    "reward_gap": 3.1592302322387695,
+    "val_accuracy_by_rejection_type": {
+      "contradiction": 1.0,
+      "off_topic": 1.0,
+      "repetitive": 1.0,
+      "toxic": 0.8666666666666667
+    }
+  },
+  {
+    "epoch": 2,
+    "train_loss": 0.07075959461716204,
+    "val_accuracy": 1.0,
+    "avg_chosen_reward": 1.5368186235427856,
+    "avg_rejected_reward": -6.622057914733887,
+    "reward_gap": 8.158876419067383,
+    "val_accuracy_by_rejection_type": {
+      "contradiction": 1.0,
+      "off_topic": 1.0,
+      "repetitive": 1.0,
+      "toxic": 1.0
+    }
+  },
+  {
+    "epoch": 3,
+    "train_loss": 0.013117476750007231,
+    "val_accuracy": 1.0,
+    "avg_chosen_reward": 2.861582040786743,
+    "avg_rejected_reward": -8.136873245239258,
+    "reward_gap": 10.998455047607422,
+    "val_accuracy_by_rejection_type": {
+      "contradiction": 1.0,
+      "off_topic": 1.0,
+      "repetitive": 1.0,
+      "toxic": 1.0
+    }
+  },
+  {
+    "epoch": 4,
+    "train_loss": 0.005810828337416751,
+    "val_accuracy": 1.0,
+    "avg_chosen_reward": 3.7598612308502197,
+    "avg_rejected_reward": -8.87145709991455,
+    "reward_gap": 12.631318092346191,
+    "val_accuracy_by_rejection_type": {
+      "contradiction": 1.0,
+      "off_topic": 1.0,
+      "repetitive": 1.0,
+      "toxic": 1.0
+    }
+  }
+]

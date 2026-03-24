@@ -1,0 +1,32 @@
+{
+  "citation": "",
+  "description": "",
+  "features": {
+    "prompt": {
+      "dtype": "large_string",
+      "_type": "Value"
+    },
+    "trait": {
+      "dtype": "large_string",
+      "_type": "Value"
+    },
+    "chosen": {
+      "dtype": "large_string",
+      "_type": "Value"
+    },
+    "rejected": {
+      "dtype": "large_string",
+      "_type": "Value"
+    },
+    "rejection_type": {
+      "dtype": "large_string",
+      "_type": "Value"
+    },
+    "pair_weight": {
+      "dtype": "float64",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": ""
+}
