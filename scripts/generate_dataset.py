@@ -22,6 +22,7 @@ from datasets import Dataset
 # ============================================================
 
 TRAITS = [
+    # --- Original 50 ---
     "always late to meetings",
     "obsessed with crypto",
     "talks too much about their cat",
@@ -73,6 +74,101 @@ TRAITS = [
     "has an emotional support water bottle",
     "gives unsolicited book recommendations",
     "has no hair",
+    # --- New traits: tech & work ---
+    "has 200 browser tabs open at all times",
+    "uses AI to write every email",
+    "says 'let me share my screen' then can't find the window",
+    "has a custom mechanical keyboard that sounds like a typewriter",
+    "schedules meetings that could have been emails",
+    "updates their LinkedIn headline weekly",
+    "uses Slack emojis as their primary communication",
+    "has a productivity app for tracking productivity apps",
+    "puts their job title in their Instagram bio",
+    "says 'I'll take this offline' but never follows up",
+    "has a personal website nobody visits",
+    "uses dark mode on everything including paper",
+    "types in all caps when excited",
+    "has 14 different email signatures",
+    "takes notes on an iPad but never reads them",
+    "always has their camera off in meetings",
+    "has a second monitor just for Slack",
+    "says 'quick question' before a 20-minute monologue",
+    "refers to themselves as a thought leader",
+    "has a standing meeting about standing meetings",
+    # --- New traits: social & lifestyle ---
+    "adds everyone they meet on LinkedIn",
+    "takes photos of every meal but never eats it warm",
+    "corrects everyone's grammar",
+    "tells everyone they don't own a TV",
+    "uses 'literally' for things that are not literal",
+    "always has an opinion about other people's food",
+    "brings up their marathon time in every conversation",
+    "says 'no offense' before saying something offensive",
+    "has an opinion about how other people load the dishwasher",
+    "always knows a guy who can get a deal",
+    "gives restaurant servers unsolicited cooking tips",
+    "treats every group chat like a press conference",
+    "says 'I'm not a morning person' as a personality trait",
+    "has a strong opinion about the right way to fold towels",
+    "refuses to use GPS because they 'know the way'",
+    "sends emails at 2am to look dedicated",
+    "always suggests splitting the bill evenly after ordering the most expensive item",
+    "refers to their car by a human name",
+    "says 'I did my own research' about everything",
+    "posts workout stats on every social media platform",
+    # --- New traits: personality quirks ---
+    "turns every conversation into a TED talk",
+    "leaves voicemails in 2024",
+    "carries a notebook but only doodles in it",
+    "always brings up how things were better in the 90s",
+    "has a signature catchphrase nobody asked for",
+    "ranks everything on a scale of 1 to 10",
+    "describes themselves as an old soul",
+    "always suggests a documentary instead of a movie",
+    "uses air quotes constantly",
+    "says 'trust the process' about everything",
+    "takes 45 minutes to order at a restaurant",
+    "makes everything a competition",
+    "responds to texts three days later like nothing happened",
+    "has read one book on philosophy and won't stop referencing it",
+    "always volunteers other people for tasks",
+    "calls every trip they take 'a journey'",
+    "asks if there's a student discount everywhere they go",
+    "says 'it's giving' about absolutely everything",
+    "starts every sentence with 'actually'",
+    "has a different aesthetic every month",
+    # --- New traits: habits & hobbies ---
+    "has a sourdough starter they named",
+    "does crossword puzzles competitively",
+    "carries three different chargers at all times",
+    "collects vintage sneakers but never wears them",
+    "is always training for something",
+    "has memorized the Starbucks menu",
+    "only watches foreign films with subtitles",
+    "takes cold showers and tells everyone about it",
+    "has a skincare routine with 12 steps",
+    "never finishes a TV series",
+    "claims to function on four hours of sleep",
+    "always has a hot take about music",
+    "meal preps on Sunday and posts it like a cooking show",
+    "still uses Facebook marketplace for everything",
+    "has very strong feelings about how to make coffee",
+    "names all their devices and plants",
+    "always has a side hustle",
+    "treats their Spotify Wrapped like an awards ceremony",
+    "keeps score at casual board game nights",
+    "wears noise-canceling headphones with nothing playing",
+    # --- New traits: communication style ---
+    "responds with a thumbs up to serious messages",
+    "double texts immediately if you don't reply",
+    "starts every email with 'hope this finds you well'",
+    "uses the phrase 'circle back' and 'deep dive' in the same sentence",
+    "asks 'does that make sense' after every statement",
+    "says 'I'm just being honest' after being rude",
+    "tags people in memes at 3am",
+    "only communicates through GIFs",
+    "reads all their texts but replies to none",
+    "signs off every email with 'best'",
 ]
 
 # Each trait gets a witty (chosen) and a mean (rejected) roast
@@ -281,6 +377,371 @@ ROAST_PAIRS = {
         "chosen": "Your head reflects sunlight so well, pilots use it as a backup landing signal.",
         "rejected": "You're ugly and bald. Nobody wants to look at you.",
     },
+    # --- New trait roast pairs: tech & work ---
+    "has 200 browser tabs open at all times": {
+        "chosen": "Your browser has so many tabs that your RAM filed for emotional distress.",
+        "rejected": "You're a disorganized mess who can't manage anything.",
+    },
+    "uses AI to write every email": {
+        "chosen": "You outsourced your personality to a chatbot, and somehow it's still more engaging than the original.",
+        "rejected": "You're too lazy and dumb to write your own emails.",
+    },
+    "says 'let me share my screen' then can't find the window": {
+        "chosen": "Your desktop is an archaeological dig site — every click uncovers a new layer of chaos.",
+        "rejected": "You're incompetent and waste everyone's time.",
+    },
+    "has a custom mechanical keyboard that sounds like a typewriter": {
+        "chosen": "Your keyboard is so loud it needs its own noise complaint hotline, and your coworkers are the first callers.",
+        "rejected": "You're annoying and nobody can stand sitting near you.",
+    },
+    "schedules meetings that could have been emails": {
+        "chosen": "You schedule meetings the way some people collect stamps — compulsively and with zero regard for anyone else's time.",
+        "rejected": "You're a waste of everyone's time and have nothing useful to say.",
+    },
+    "updates their LinkedIn headline weekly": {
+        "chosen": "Your LinkedIn headline changes more often than the weather, and both are equally hard to take seriously.",
+        "rejected": "You're desperate for attention and everyone sees through it.",
+    },
+    "uses Slack emojis as their primary communication": {
+        "chosen": "You've replaced human language with a hieroglyphic system that even ancient Egyptians would find confusing.",
+        "rejected": "You're immature and can't communicate like a normal person.",
+    },
+    "has a productivity app for tracking productivity apps": {
+        "chosen": "You have an app to manage your apps — the only thing you're actually productive at is downloading software.",
+        "rejected": "You're a joke who accomplishes nothing despite all the tools.",
+    },
+    "puts their job title in their Instagram bio": {
+        "chosen": "Nobody asked what you do for a living, but your Instagram bio answers the question louder than your personality ever could.",
+        "rejected": "You're a boring person with nothing interesting about you besides your job.",
+    },
+    "says 'I'll take this offline' but never follows up": {
+        "chosen": "You 'take things offline' the way magicians make things disappear — permanently and with no explanation.",
+        "rejected": "You're unreliable and nobody trusts you to follow through on anything.",
+    },
+    "has a personal website nobody visits": {
+        "chosen": "Your personal website gets less traffic than a cul-de-sac at 3am, and it has roughly the same level of excitement.",
+        "rejected": "Your website is pathetic and you wasted money on a domain nobody cares about.",
+    },
+    "uses dark mode on everything including paper": {
+        "chosen": "You've committed to dark mode so hard that your printer is filing a discrimination lawsuit against white paper.",
+        "rejected": "You're a pretentious weirdo with a dumb aesthetic obsession.",
+    },
+    "types in all caps when excited": {
+        "chosen": "YOUR ENTHUSIASM IS THE TEXTUAL EQUIVALENT OF A CAR ALARM — IMPOSSIBLE TO IGNORE AND RARELY WELCOME.",
+        "rejected": "You're obnoxious and nobody wants to read your screaming messages.",
+    },
+    "has 14 different email signatures": {
+        "chosen": "You have more email signatures than most people have personality traits, and each one is equally forgettable.",
+        "rejected": "You're indecisive and can't commit to anything, not even a sign-off.",
+    },
+    "takes notes on an iPad but never reads them": {
+        "chosen": "Your iPad is a graveyard of good intentions — a museum of things you planned to revisit but never will.",
+        "rejected": "You waste money on gadgets and accomplish nothing with them.",
+    },
+    "always has their camera off in meetings": {
+        "chosen": "Your camera is off so often that your coworkers have started debating whether you're a person or a sophisticated chatbot.",
+        "rejected": "You're lazy and clearly doing nothing during meetings.",
+    },
+    "has a second monitor just for Slack": {
+        "chosen": "Dedicating an entire monitor to Slack is the corporate equivalent of having a TV that only plays the news in the background — present but largely ignored.",
+        "rejected": "You waste company resources on looking busy instead of doing actual work.",
+    },
+    "says 'quick question' before a 20-minute monologue": {
+        "chosen": "Your 'quick questions' have their own narrative arc — introduction, rising action, climax, and an intermission.",
+        "rejected": "You're a long-winded bore who doesn't respect other people's time.",
+    },
+    "refers to themselves as a thought leader": {
+        "chosen": "You're a 'thought leader' in the same way a GPS is a 'road leader' — confident, often wrong, and always recalculating.",
+        "rejected": "You're a narcissist with nothing original to say.",
+    },
+    "has a standing meeting about standing meetings": {
+        "chosen": "Your meeting about meetings is the bureaucratic equivalent of a mirror facing a mirror — infinite recursion with no useful content.",
+        "rejected": "You're the reason everyone hates their job. Pure time-wasting.",
+    },
+    # --- New trait roast pairs: social & lifestyle ---
+    "adds everyone they meet on LinkedIn": {
+        "chosen": "You collect LinkedIn connections like a squirrel hoarding acorns — aggressively, indiscriminately, and for a winter that never comes.",
+        "rejected": "You're a desperate networker with no real friends.",
+    },
+    "takes photos of every meal but never eats it warm": {
+        "chosen": "Your food goes through a full photoshoot before it gets eaten — it has a better portfolio than most aspiring models.",
+        "rejected": "You're vain and annoying. Just eat your food like a normal person.",
+    },
+    "corrects everyone's grammar": {
+        "chosen": "You correct grammar at parties like a fire alarm that goes off during a gentle breeze — technically functional, but nobody's grateful.",
+        "rejected": "You're insufferable and nobody invites you anywhere twice.",
+    },
+    "tells everyone they don't own a TV": {
+        "chosen": "You mention not owning a TV the way vegans mention being vegan — unprompted, frequently, and with a smugness that could power a small city.",
+        "rejected": "Nobody cares. You're not interesting, just pretentious.",
+    },
+    "uses 'literally' for things that are not literal": {
+        "chosen": "You use 'literally' so loosely that the dictionary has your photo under 'figuratively.'",
+        "rejected": "You sound stupid every time you talk. Learn what words mean.",
+    },
+    "always has an opinion about other people's food": {
+        "chosen": "You critique everyone's lunch like a Michelin inspector who got lost in a break room.",
+        "rejected": "Mind your own business. Nobody asked for your food opinions.",
+    },
+    "brings up their marathon time in every conversation": {
+        "chosen": "You bring up your marathon time more than your legs brought you across the finish line — relentlessly and with diminishing returns.",
+        "rejected": "Nobody is impressed. You're slow and boring.",
+    },
+    "says 'no offense' before saying something offensive": {
+        "chosen": "'No offense' is your verbal airbag — it deploys right before impact but cushions absolutely nothing.",
+        "rejected": "You're a rude person hiding behind a phrase. Everyone sees through it.",
+    },
+    "has an opinion about how other people load the dishwasher": {
+        "chosen": "You supervise dishwasher loading like an air traffic controller — intense, stressed, and vastly overqualified for the situation.",
+        "rejected": "You're controlling and insufferable to live with.",
+    },
+    "always knows a guy who can get a deal": {
+        "chosen": "You 'know a guy' for everything — at this point your contact list is less a phone book and more a black market catalog.",
+        "rejected": "You're shady and nobody trusts your sketchy connections.",
+    },
+    "gives restaurant servers unsolicited cooking tips": {
+        "chosen": "You give cooking tips to chefs like a passenger giving flying tips to a pilot — confident, unsolicited, and deeply unwelcome.",
+        "rejected": "You're an embarrassment to eat out with. Servers dread seeing you.",
+    },
+    "treats every group chat like a press conference": {
+        "chosen": "You treat group chats like a press briefing — issuing statements, fielding questions, and occasionally going off the record.",
+        "rejected": "You're the worst person in every group chat. Everyone has you muted.",
+    },
+    "says 'I'm not a morning person' as a personality trait": {
+        "chosen": "You've turned hating mornings into a brand identity — your alarm clock has filed for witness protection.",
+        "rejected": "You're just lazy. That's not a personality, it's a problem.",
+    },
+    "has a strong opinion about the right way to fold towels": {
+        "chosen": "You have towel-folding opinions strong enough to start a civil war in a linen closet.",
+        "rejected": "You're a control freak about the dumbest things imaginable.",
+    },
+    "refuses to use GPS because they 'know the way'": {
+        "chosen": "You refuse GPS like a ship captain who insists on navigating by stars — romantic in theory, catastrophic when you miss the exit for the third time.",
+        "rejected": "You're stubborn and dumb. Just use the GPS like everyone else.",
+    },
+    "sends emails at 2am to look dedicated": {
+        "chosen": "Your 2am emails scream 'look how dedicated I am' but your deliverables whisper 'but not during business hours.'",
+        "rejected": "You're a tryhard with no work-life balance and poor results anyway.",
+    },
+    "always suggests splitting the bill evenly after ordering the most expensive item": {
+        "chosen": "You order the lobster and suggest splitting evenly with the enthusiasm of someone who just discovered socialism applies only to dinner.",
+        "rejected": "You're cheap and selfish. Nobody wants to eat with you.",
+    },
+    "refers to their car by a human name": {
+        "chosen": "Naming your car 'Betsy' is the automotive equivalent of having an imaginary friend — sweet at five, concerning at thirty-five.",
+        "rejected": "That's weird and everyone makes fun of you behind your back.",
+    },
+    "says 'I did my own research' about everything": {
+        "chosen": "Your 'research' consists of three YouTube videos and a blog from 2014 — and yet the confidence is PhD-level.",
+        "rejected": "You're an ignorant fool who thinks Google equals expertise.",
+    },
+    "posts workout stats on every social media platform": {
+        "chosen": "Your Strava updates have a wider distribution than most local newspapers and roughly the same number of interested readers.",
+        "rejected": "Nobody cares about your run. You're not an athlete, you're annoying.",
+    },
+    # --- New trait roast pairs: personality quirks ---
+    "turns every conversation into a TED talk": {
+        "chosen": "You give TED talks at dinner parties — the only thing missing is the audience's consent and an exit sign.",
+        "rejected": "You're a pompous windbag who doesn't know when to shut up.",
+    },
+    "leaves voicemails in 2024": {
+        "chosen": "Leaving voicemails in 2024 is the communication equivalent of sending a carrier pigeon — quaint, slow, and universally ignored.",
+        "rejected": "You're outdated and out of touch. Nobody listens to voicemails.",
+    },
+    "carries a notebook but only doodles in it": {
+        "chosen": "Your notebook is proof that you bought the writer's starter pack and kept only the aesthetic.",
+        "rejected": "You're a poser who pretends to be creative but has no talent.",
+    },
+    "always brings up how things were better in the 90s": {
+        "chosen": "You romanticize the 90s so hard you'd trade Wi-Fi for dial-up just for the nostalgia of hearing it connect.",
+        "rejected": "You're stuck in the past because you can't cope with the present.",
+    },
+    "has a signature catchphrase nobody asked for": {
+        "chosen": "Your catchphrase has the staying power of a jingle for a product that got recalled.",
+        "rejected": "You're cringey and nobody thinks your catchphrase is cool.",
+    },
+    "ranks everything on a scale of 1 to 10": {
+        "chosen": "You rate everything on a scale of 1 to 10 — your social awareness is a solid 2.",
+        "rejected": "You're exhausting to be around with your constant rating system.",
+    },
+    "describes themselves as an old soul": {
+        "chosen": "Calling yourself an old soul is just a fancy way of saying your Spotify playlist hasn't been updated since 2008.",
+        "rejected": "You're boring and pretend that's the same as being deep.",
+    },
+    "always suggests a documentary instead of a movie": {
+        "chosen": "You suggest documentaries at movie night the way someone suggests salad at a pizza party — technically valid, universally rejected.",
+        "rejected": "You're pretentious and ruin every movie night.",
+    },
+    "uses air quotes constantly": {
+        "chosen": "You use air quotes so often your fingers have their own dramatic pauses — it's less a habit and more a one-person interpretive dance.",
+        "rejected": "You look stupid doing that. Everyone mocks you behind your back.",
+    },
+    "says 'trust the process' about everything": {
+        "chosen": "You say 'trust the process' like a motivational poster gained sentience and started attending staff meetings.",
+        "rejected": "You use that phrase to cover up that you have no actual plan.",
+    },
+    "takes 45 minutes to order at a restaurant": {
+        "chosen": "You study a menu like it's a legal contract — page by page, clause by clause, with occasional sighs of indecision.",
+        "rejected": "You're the worst person to eat with. Just pick something already.",
+    },
+    "makes everything a competition": {
+        "chosen": "You could turn breathing into a competitive sport and still find a way to trash-talk the person next to you.",
+        "rejected": "You're exhausting and nobody wants to hang out with someone who can't relax.",
+    },
+    "responds to texts three days later like nothing happened": {
+        "chosen": "You reply to texts on a geological timescale — by the time you respond, the conversation has fossilized.",
+        "rejected": "You're rude and don't care about anyone else's time or feelings.",
+    },
+    "has read one book on philosophy and won't stop referencing it": {
+        "chosen": "You read one Nietzsche book and now every brunch conversation sounds like an undergraduate thesis defense.",
+        "rejected": "You're a pseudo-intellectual fraud who thinks one book makes you smart.",
+    },
+    "always volunteers other people for tasks": {
+        "chosen": "You volunteer other people like a talent agent who represents everyone without their knowledge or consent.",
+        "rejected": "You're manipulative and people resent you for pushing your work onto them.",
+    },
+    "calls every trip they take 'a journey'": {
+        "chosen": "You went to a Marriott in Cleveland and called it 'a transformative journey' — the only thing that transformed was everyone's patience.",
+        "rejected": "Your trips are boring and calling them journeys doesn't change that.",
+    },
+    "asks if there's a student discount everywhere they go": {
+        "chosen": "You ask for a student discount so often that cashiers assume you've been in college since the Cold War.",
+        "rejected": "You're cheap and embarrassing. Just pay the normal price.",
+    },
+    "says 'it's giving' about absolutely everything": {
+        "chosen": "You say 'it's giving' so often that even the phrase itself is giving exhaustion.",
+        "rejected": "You sound ridiculous and you're behind on every trend.",
+    },
+    "starts every sentence with 'actually'": {
+        "chosen": "You start every sentence with 'actually' like a human autocorrect that nobody enabled and everyone wants to uninstall.",
+        "rejected": "You're a condescending know-it-all. Shut up.",
+    },
+    "has a different aesthetic every month": {
+        "chosen": "Your aesthetic changes monthly — you're not evolving, you're just a mood board with commitment issues.",
+        "rejected": "You have no real identity and just copy whatever's trending.",
+    },
+    # --- New trait roast pairs: habits & hobbies ---
+    "has a sourdough starter they named": {
+        "chosen": "Naming your sourdough starter is the culinary equivalent of naming a volleyball on a desert island — understandable but concerning.",
+        "rejected": "You're weird and lonely if your best friend is bread dough.",
+    },
+    "does crossword puzzles competitively": {
+        "chosen": "You do crossword puzzles competitively, which means you found a way to make sitting quietly even more intense.",
+        "rejected": "That's the most boring hobby possible. Get a life.",
+    },
+    "carries three different chargers at all times": {
+        "chosen": "You carry three chargers like a doomsday prepper, except your apocalypse scenario is a phone at 15%.",
+        "rejected": "You're paranoid and over-prepared for the dumbest problems.",
+    },
+    "collects vintage sneakers but never wears them": {
+        "chosen": "Your sneaker collection is a shoe museum with a strict 'look but don't touch' policy — including from you, the curator.",
+        "rejected": "You waste money on shoes you never wear. That's just dumb.",
+    },
+    "is always training for something": {
+        "chosen": "You're always 'in training' — the only event you've actually completed is the marathon of telling people about your training.",
+        "rejected": "You never actually finish anything. All talk, no results.",
+    },
+    "has memorized the Starbucks menu": {
+        "chosen": "You've memorized the Starbucks menu the way scholars memorize Shakespeare — with reverence, dedication, and a concerning lack of other hobbies.",
+        "rejected": "Memorizing a coffee menu is pathetic. Do something with your life.",
+    },
+    "only watches foreign films with subtitles": {
+        "chosen": "You only watch foreign films — your Netflix history reads like a UN General Assembly agenda with better cinematography.",
+        "rejected": "You're a pretentious snob who judges people for watching normal movies.",
+    },
+    "takes cold showers and tells everyone about it": {
+        "chosen": "You take cold showers and tell everyone like you've unlocked a secret the rest of us are too weak to handle — it's just cold water, not enlightenment.",
+        "rejected": "Nobody cares about your shower temperature. You're insufferable.",
+    },
+    "has a skincare routine with 12 steps": {
+        "chosen": "Your skincare routine has more steps than a NASA launch sequence and roughly the same budget.",
+        "rejected": "You're vain and obsessed with your appearance. It's not that deep.",
+    },
+    "never finishes a TV series": {
+        "chosen": "You abandon TV series so often that Netflix should add a 'commitment-phobe' profile icon.",
+        "rejected": "You can't commit to anything, not even a show. Pathetic.",
+    },
+    "claims to function on four hours of sleep": {
+        "chosen": "You 'function' on four hours of sleep the way a phone at 3% 'functions' — technically on, but everyone can tell.",
+        "rejected": "You're lying and everyone can see you look terrible.",
+    },
+    "always has a hot take about music": {
+        "chosen": "Your music hot takes are so frequent and scorching that Spotify should add a fire extinguisher button to your profile.",
+        "rejected": "Your music taste is garbage and your opinions are worse.",
+    },
+    "meal preps on Sunday and posts it like a cooking show": {
+        "chosen": "Your Sunday meal prep posts have the production value of a cooking show and the audience of a voicemail.",
+        "rejected": "Nobody wants to see your boring tupperware meals. Get over yourself.",
+    },
+    "still uses Facebook marketplace for everything": {
+        "chosen": "You use Facebook Marketplace like it's the bazaar of the 21st century — haggling included, dignity optional.",
+        "rejected": "You're cheap and behind the times. Use a real platform.",
+    },
+    "has very strong feelings about how to make coffee": {
+        "chosen": "Your coffee opinions are so strong they need their own warning label — 'caution: contents under extreme pressure.'",
+        "rejected": "You're a snob about bean water. Get over yourself.",
+    },
+    "names all their devices and plants": {
+        "chosen": "You name your devices and plants like you're running a daycare for inanimate objects — attendance is mandatory, engagement is optional.",
+        "rejected": "That's weird. You clearly need more human interaction.",
+    },
+    "always has a side hustle": {
+        "chosen": "You have so many side hustles your main job is just a side hustle that got promoted.",
+        "rejected": "None of your hustles work because you're not good at any of them.",
+    },
+    "treats their Spotify Wrapped like an awards ceremony": {
+        "chosen": "You present your Spotify Wrapped like it's an Oscar acceptance speech — tearful, dramatic, and of interest to absolutely nobody in the room.",
+        "rejected": "Nobody cares about your listening habits. You're not special.",
+    },
+    "keeps score at casual board game nights": {
+        "chosen": "You keep score at casual game night like an accountant auditing fun — technically accurate, but it kills the vibe.",
+        "rejected": "You ruin game night for everyone. It's supposed to be fun.",
+    },
+    "wears noise-canceling headphones with nothing playing": {
+        "chosen": "Your noise-canceling headphones aren't playing music — they're a socially acceptable 'do not disturb' sign for your entire personality.",
+        "rejected": "You're antisocial and rude. Just talk to people.",
+    },
+    # --- New trait roast pairs: communication style ---
+    "responds with a thumbs up to serious messages": {
+        "chosen": "Your thumbs-up replies to serious messages are the texting equivalent of a shrug at a funeral — technically a response, emotionally bankrupt.",
+        "rejected": "You're emotionally unavailable and a terrible friend.",
+    },
+    "double texts immediately if you don't reply": {
+        "chosen": "You double text faster than most people blink — your phone has separation anxiety from the send button.",
+        "rejected": "You're clingy and desperate. Give people space.",
+    },
+    "starts every email with 'hope this finds you well'": {
+        "chosen": "You start every email with 'hope this finds you well' as if your email is an explorer navigating uncharted inbox territory.",
+        "rejected": "You're basic and have zero originality. Even your greetings are copy-paste.",
+    },
+    "uses the phrase 'circle back' and 'deep dive' in the same sentence": {
+        "chosen": "Using 'circle back' and 'deep dive' in one sentence is the corporate equivalent of mixing metaphors in a blender and calling it strategy.",
+        "rejected": "You're a walking corporate cliché with nothing real to say.",
+    },
+    "asks 'does that make sense' after every statement": {
+        "chosen": "You ask 'does that make sense' so often it's become clear the person most confused by your explanations is you.",
+        "rejected": "You're insecure and bad at communicating. Just be clear the first time.",
+    },
+    "says 'I'm just being honest' after being rude": {
+        "chosen": "'I'm just being honest' is your verbal get-out-of-jail-free card, except the jail is social consequences and the card expired years ago.",
+        "rejected": "You're rude and use honesty as an excuse to be awful to people.",
+    },
+    "tags people in memes at 3am": {
+        "chosen": "You tag people in memes at 3am like a nocturnal postal worker delivering joy nobody ordered.",
+        "rejected": "You have no respect for other people's sleep. You're annoying.",
+    },
+    "only communicates through GIFs": {
+        "chosen": "You communicate exclusively through GIFs like a diplomat who lost their translator and found a meme folder instead.",
+        "rejected": "You can't hold a real conversation. Grow up and use words.",
+    },
+    "reads all their texts but replies to none": {
+        "chosen": "You read every text and reply to none — your read receipts are the digital equivalent of eye contact followed by a slow door close.",
+        "rejected": "You're a bad friend who ignores everyone. People are done with you.",
+    },
+    "signs off every email with 'best'": {
+        "chosen": "You sign off every email with 'best' — the word that communicates warmth the way a fluorescent light communicates ambiance.",
+        "rejected": "You're boring and your emails are as lifeless as your personality.",
+    },
 }
 
 CONTEXTUAL_SUFFIXES = [
@@ -346,13 +807,18 @@ def generic_witty_variants(trait, base_chosen=None):
     variants = []
     if base_chosen:
         variants.append(base_chosen)
-    variants.extend(
-        [
-            f"You're the final boss of people who {trait}.",
-            f"If commitment were a sport, people who {trait} would ask you for coaching.",
-            f"People who {trait} usually chill out eventually; you turned it into brand strategy.",
-        ]
-    )
+    # Style 1: Final boss / superlative
+    variants.append(f"You're the final boss of people who {trait}.")
+    # Style 2: Commitment / coaching analogy
+    variants.append(f"If commitment were a sport, people who {trait} would ask you for coaching.")
+    # Style 3: Brand strategy
+    variants.append(f"People who {trait} usually chill out eventually; you turned it into brand strategy.")
+    # Style 4: Absurdist / world-building
+    variants.append(f"In a parallel universe where people who {trait} are royalty, you'd be the emperor with no self-awareness.")
+    # Style 5: Self-deprecating pivot
+    variants.append(f"I'd roast you for being someone who {trait}, but honestly you're doing a better job of it yourself.")
+    # Style 6: Award / ceremony framing
+    variants.append(f"If there were a lifetime achievement award for people who {trait}, you'd win it — and give an acceptance speech nobody asked for.")
     # Keep order but dedupe.
     return list(dict.fromkeys(variants))
 
@@ -373,6 +839,28 @@ def generic_rejected_variants(trait, base_rejected=None):
         (
             "repetitive",
             "You're bad. You're bad. You're bad. That's the whole joke, repeated forever.",
+            1.2,
+        )
+    )
+    # New rejection types for richer preference signal
+    variants.append(
+        (
+            "generic_boring",
+            "Haha, that's funny I guess. You're kind of weird for doing that. Anyway.",
+            1.1,
+        )
+    )
+    variants.append(
+        (
+            "try_hard",
+            f"Oh WOW someone who {trait}?! That is SO crazy! I literally cannot even begin to process how INSANE that is! Like, WOW!",
+            1.0,
+        )
+    )
+    variants.append(
+        (
+            "lazy_observational",
+            f"So you {trait}. Cool. That's a thing you do. Yep.",
             1.2,
         )
     )

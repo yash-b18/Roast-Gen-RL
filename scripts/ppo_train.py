@@ -342,16 +342,20 @@ def main():
     )
 
     # Training loop
-    num_epochs = 6
+    num_epochs = 4
     batch_size = 4
     max_new_tokens = 60
-    kl_coef = 0.12
+    kl_coef = 0.20
     clip_eps = 0.2
+    diversity_bonus_coef = 0.5
+    early_stop_distinct2_threshold = 0.15
     training_log = []
 
     print(f"\nStarting PPO training: {num_epochs} epochs, batch_size={batch_size}")
     print(f"KL coef: {kl_coef}, Clip eps: {clip_eps}")
-    print("Reward shaping: +topic_overlap -repetition -contradiction")
+    print(f"Diversity bonus coef: {diversity_bonus_coef}")
+    print(f"Early stopping if Distinct-2 < {early_stop_distinct2_threshold}")
+    print("Reward shaping: +topic_overlap -repetition -contradiction +diversity")
 
     for epoch in range(num_epochs):
         epoch_rewards = []
@@ -430,17 +434,30 @@ def main():
             topic_tensor = torch.tensor(topic_scores, dtype=raw_rewards.dtype, device=device)
             repetition_tensor = torch.tensor(repetition_penalties, dtype=raw_rewards.dtype, device=device)
             contradiction_tensor = torch.tensor(contradiction_penalties, dtype=raw_rewards.dtype, device=device)
+
+            # Diversity bonus: reward unique bigrams in response
+            diversity_scores = []
+            for resp in responses:
+                words = re.findall(r"[a-zA-Z']+", resp.lower())
+                if len(words) < 2:
+                    diversity_scores.append(0.0)
+                else:
+                    bigrams = [tuple(words[i:i+2]) for i in range(len(words) - 1)]
+                    diversity_scores.append(len(set(bigrams)) / len(bigrams) if bigrams else 0.0)
+            diversity_tensor = torch.tensor(diversity_scores, dtype=raw_rewards.dtype, device=device)
+
             rewards = (
                 raw_rewards
                 + 0.8 * topic_tensor
                 - 1.0 * repetition_tensor
                 - 1.3 * contradiction_tensor
+                + diversity_bonus_coef * diversity_tensor
             )
 
             epoch_rewards.extend(rewards.tolist())
 
             # Log examples
-            for p, response, rr, r, t, rep, con in zip(
+            for p, response, rr, r, t, rep, con, div in zip(
                 batch_prompts,
                 responses,
                 raw_rewards.tolist(),
@@ -448,6 +465,7 @@ def main():
                 topic_scores,
                 repetition_penalties,
                 contradiction_penalties,
+                diversity_scores,
             ):
                 epoch_examples.append(
                     {
@@ -458,6 +476,7 @@ def main():
                         "topic_overlap": t,
                         "repetition_ratio": rep,
                         "contradiction_flag": con,
+                        "diversity_score": div,
                     }
                 )
 
@@ -482,11 +501,20 @@ def main():
         std_reward = np.std(epoch_rewards)
         avg_kl = np.mean(epoch_kl) if epoch_kl else 0
 
+        # Compute epoch-level Distinct-2 across all responses for early stopping
+        all_responses_text = [ex["response"] for ex in epoch_examples]
+        all_bigrams = []
+        for resp in all_responses_text:
+            words = re.findall(r"[a-zA-Z']+", resp.lower())
+            all_bigrams.extend([tuple(words[i:i+2]) for i in range(len(words) - 1)])
+        epoch_distinct2 = len(set(all_bigrams)) / len(all_bigrams) if all_bigrams else 0.0
+
         log_entry = {
             "epoch": epoch + 1,
             "avg_reward": float(avg_reward),
             "std_reward": float(std_reward),
             "avg_kl": float(avg_kl),
+            "distinct_2": float(epoch_distinct2),
             "num_samples": len(epoch_rewards),
             "examples": epoch_examples[:3],
         }
@@ -496,14 +524,21 @@ def main():
             f"\nEpoch {epoch+1}/{num_epochs} | "
             f"Avg Reward: {avg_reward:.4f} (±{std_reward:.4f}) | "
             f"Avg KL: {avg_kl:.4f} | "
+            f"Distinct-2: {epoch_distinct2:.4f} | "
             f"Samples: {len(epoch_rewards)}"
         )
         for ex in epoch_examples[:2]:
             print(
                 f"  [raw={ex['reward_raw']:.3f} shaped={ex['reward_shaped']:.3f}] "
                 f"topic={ex['topic_overlap']:.2f} rep={ex['repetition_ratio']:.2f} con={ex['contradiction_flag']:.0f} "
+                f"div={ex['diversity_score']:.2f} "
                 f"{ex['prompt'][:40]}... -> {ex['response'][:70]}..."
             )
+
+        # Early stopping: halt if diversity collapses
+        if epoch_distinct2 < early_stop_distinct2_threshold and epoch > 0:
+            print(f"\n*** Early stopping: Distinct-2 ({epoch_distinct2:.4f}) fell below threshold ({early_stop_distinct2_threshold}) ***")
+            break
 
     # Save PPO model
     print(f"\nSaving PPO-aligned model to {PPO_MODEL_DIR}")

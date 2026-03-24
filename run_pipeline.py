@@ -35,7 +35,7 @@ def run_step(step_num, name, func):
     start = time.time()
     result = func()
     elapsed = time.time() - start
-    print(f"\n⏱  Step {step_num} completed in {elapsed:.1f}s")
+    print(f"\n  Step {step_num} completed in {elapsed:.1f}s")
     return result
 
 
@@ -54,7 +54,7 @@ def main():
     total_start = time.time()
 
     print("=" * 70)
-    print("  RLHF ROAST GENERATOR — Full Pipeline")
+    print("  RLHF ROAST GENERATOR - Full Pipeline")
     print("  Fine-tune GPT-2 to generate witty, clever roasts using RLHF")
     print("=" * 70)
     print(f"\nSteps to run: {sorted(steps_to_run)}")
@@ -81,7 +81,7 @@ def main():
 
     total_elapsed = time.time() - total_start
     print("\n" + "=" * 70)
-    print(f"  PIPELINE COMPLETE — Total time: {total_elapsed:.1f}s")
+    print(f"  PIPELINE COMPLETE - Total time: {total_elapsed:.1f}s")
     print("=" * 70)
     print("\nOutputs saved to:")
     print("  models/sft_model/        — SFT fine-tuned GPT-2")
